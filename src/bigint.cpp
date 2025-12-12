@@ -1,13 +1,18 @@
-#include "bignumber.h"
+#include "bigint.h"
 
 #include <regex>
 #include <stdexcept>
 #include <ranges>
 
 namespace arbys::bignumbers {
-    BigNumber::BigNumber() = default;
+    // TODO: implement negative numbers
+    BigInt::BigInt() = default;
 
-    BigNumber BigNumber::fromString(const std::string& str, const std::string& separator) {
+    BigInt::BigInt(const std::vector<int> &digits, const size_t length) : m_digits(digits), m_length(length) {
+        m_digits.resize(m_length);
+    }
+
+    BigInt BigInt::fromString(const std::string& str, const std::string& separator) {
         // Remove all whitespace
         std::string trimmed_str;
         trimmed_str = trim(str);
@@ -63,34 +68,34 @@ namespace arbys::bignumbers {
         if (digits_str.empty())
             digits_str = "0";
 
-        // Convert to BigNumber internal format
+        // Convert to BigInt internal format
         const size_t length = digits_str.length();
         std::vector<int> digits(length);
 
-        // BigNumber stores least significant digit at index 0 (reverse order)
+        // BigInt stores least significant digit at index 0 (reverse order)
         for (size_t i = 0; i < length; i++)
             digits[i] = digits_str[length - 1 - i] - '0';
 
         return { digits, length };
     }
 
-    BigNumber BigNumber::fromInt(int nr) {
+    BigInt BigInt::fromInt(int nr) {
         // TODO: implement
         return {};
     }
 
-    BigNumber BigNumber::fromLLInt(long long nr) {
+    BigInt BigInt::fromLLInt(long long nr) {
         // TODO: implement
         return {};
     }
 
-    uint8_t BigNumber::getDigit(const size_t index) const {
+    uint8_t BigInt::getDigit(const size_t index) const {
         return m_digits[m_length - 1 - index];
     }
 
-    BigNumber BigNumber::add(const BigNumber& other) const {
-        const BigNumber* bigger;
-        const BigNumber* smaller;
+    BigInt BigInt::add(const BigInt& other) const {
+        const BigInt* bigger;
+        const BigInt* smaller;
 
         if (this->m_length < other.m_length) {
             smaller = this;
@@ -126,15 +131,59 @@ namespace arbys::bignumbers {
         return { digits, digits.size() };
     }
 
-    BigNumber BigNumber::operator+(const BigNumber &other) const {
+    BigInt BigInt::operator+(const BigInt &other) const {
         return add(other);
     }
 
-    BigNumber BigNumber::sub(const BigNumber &other) const {
-        return {};
+    BigInt BigInt::sub(const BigInt &other) const {
+        const BigInt* bigger;
+        const BigInt* smaller;
+
+        if (this->m_length < other.m_length) {
+            smaller = this;
+            bigger  = &other;
+        } else {
+            smaller = &other;
+            bigger  = this;
+        }
+
+        std::vector<int> digits;
+        digits.resize(bigger->m_length);
+
+        int borrow = 0;
+        size_t i = 0;
+        for (; i < smaller->m_length; ++i) {
+            if (bigger->m_digits[i] - borrow >= smaller->m_digits[i]) {
+                digits[i] = bigger->m_digits[i] - smaller->m_digits[i] - borrow;
+                borrow = 0;
+            } else {
+                digits[i] = 10 + bigger->m_digits[i] - smaller->m_digits[i] - borrow;
+                borrow = 1;
+            }
+        }
+
+        for (; i < bigger->m_length; ++i) {
+            if (borrow) {
+                if (bigger->m_digits[i] == 0) {
+                    digits[i] = 9;
+                } else {
+                    digits[i] = bigger->m_digits[i] - borrow;
+                    borrow = 0;
+                }
+            } else {
+                digits[i] = bigger->m_digits[i];
+            }
+        }
+
+        size_t length = digits.size();
+        for (const auto d : digits | std::views::drop(1) | std::views::reverse) {
+            if (d == 0) length--;
+        }
+
+        return { digits, length };
     }
 
-    BigNumber BigNumber::operator-(const BigNumber &other) const {
+    BigInt BigInt::operator-(const BigInt &other) const {
         return sub(other);
     }
 

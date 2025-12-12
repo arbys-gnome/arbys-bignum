@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "bignumber.h"
+#include "bigint.h"
 
 namespace arbys::bignumbers::tests::helpers {
     std::string makeIncreasing(const size_t len) {
@@ -10,7 +10,7 @@ namespace arbys::bignumbers::tests::helpers {
         return s;
     }
 
-    void expectBigNumberEquals(const BigNumber &bn, const std::string &s) {
+    void expectBigIntEquals(const BigInt &bn, const std::string &s) {
         ASSERT_EQ(bn.getLength(), s.size());
         for (size_t i = 0; i < s.size(); i++)
             EXPECT_EQ(bn.getDigit(i), s[i] - '0');

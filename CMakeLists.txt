@@ -12,15 +12,16 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 include_directories(include)
-add_library(BigNumbers SHARED src/bignumber.cpp)
+add_library(BigNumbers SHARED src/bigint.cpp)
 
 enable_testing()
 
 add_executable(bignumber_test
         tests/helpers/helpers.cpp
-        tests/bignumber_from_string_test.cpp
-        tests/bignumber_add_test.cpp
+        tests/bigint_from_string_test.cpp
+        tests/bigint_add_test.cpp
         tests/helpers/helpers.h
+        tests/bigint_sub_test.cpp
 )
 
 target_link_libraries(bignumber_test
