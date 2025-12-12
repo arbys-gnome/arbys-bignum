@@ -17,7 +17,10 @@ add_library(BigNumbers SHARED src/bignumber.cpp)
 enable_testing()
 
 add_executable(bignumber_test
-        tests/bignumber_test.cpp
+        tests/helpers/helpers.cpp
+        tests/bignumber_from_string_test.cpp
+        tests/bignumber_add_test.cpp
+        tests/helpers/helpers.h
 )
 
 target_link_libraries(bignumber_test

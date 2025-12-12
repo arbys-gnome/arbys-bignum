@@ -42,11 +42,15 @@ namespace arbys::bignumbers {
 
         [[nodiscard]] uint8_t getDigit(size_t index) const;
 
-        [[nodiscard]] BigNumber add(const BigNumber &other) const;
-
         [[nodiscard]] size_t getLength() const { return m_length; }
 
+        [[nodiscard]] BigNumber add(const BigNumber &other) const;
+
         BigNumber operator+(const BigNumber &other) const;
+
+        [[nodiscard]] BigNumber sub(const BigNumber &other) const;
+
+        BigNumber operator-(const BigNumber &other) const;
 
     private:
         /**

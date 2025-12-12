@@ -101,28 +101,27 @@ namespace arbys::bignumbers {
         }
 
         std::vector<int> digits;
-        digits.resize(bigger->m_length);   // IMPORTANT: allocate elements
+        digits.resize(bigger->m_length);
 
         int carry = 0;
         int i = 0;
 
         // Add common digits
         for (; i < smaller->m_length; ++i) {
-            int sum = smaller->m_digits[i] + bigger->m_digits[i] + carry;
+            const int sum = smaller->m_digits[i] + bigger->m_digits[i] + carry;
             digits[i] = sum % 10;
             carry = sum / 10;
         }
 
         // Add remaining digits from the bigger number
         for (; i < bigger->m_length; ++i) {
-            int sum = bigger->m_digits[i] + carry;
+            const int sum = bigger->m_digits[i] + carry;
             digits[i] = sum % 10;
             carry = sum / 10;
         }
 
         // Extra carry at the highest digit
-        if (carry)
-            digits.push_back(carry);
+        if (carry) digits.push_back(carry);
 
         return { digits, digits.size() };
     }
@@ -130,5 +129,14 @@ namespace arbys::bignumbers {
     BigNumber BigNumber::operator+(const BigNumber &other) const {
         return add(other);
     }
+
+    BigNumber BigNumber::sub(const BigNumber &other) const {
+        return {};
+    }
+
+    BigNumber BigNumber::operator-(const BigNumber &other) const {
+        return sub(other);
+    }
+
 } // arbys::bignumbers
 
