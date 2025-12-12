@@ -3,6 +3,11 @@
 #include "bigint.h"
 
 namespace arbys::bignumbers::tests::helpers {
+    void expectCompare(const BigInt& a, const BigInt& b, const std::strong_ordering expected) {
+        const auto r = a.compare(b);
+        EXPECT_EQ(r, expected);
+    }
+
     std::string makeIncreasing(const size_t len) {
         std::string s;
         for (size_t i = 1; i <= len; i++)

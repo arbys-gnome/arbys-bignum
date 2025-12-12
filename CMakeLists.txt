@@ -22,6 +22,7 @@ add_executable(bignumber_test
         tests/bigint_add_test.cpp
         tests/helpers/helpers.h
         tests/bigint_sub_test.cpp
+        tests/bigint_compare_test.cpp
 )
 
 target_link_libraries(bignumber_test

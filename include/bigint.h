@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <compare>
 
 namespace arbys::bignumbers {
 
@@ -43,6 +44,34 @@ namespace arbys::bignumbers {
         [[nodiscard]] uint8_t getDigit(size_t index) const;
 
         [[nodiscard]] size_t getLength() const { return m_length; }
+
+        /**
+         * @brief Compares this BigInt with another BigInt using total ordering.
+         *
+         * Performs a lexicographical comparison based on the mathematical value
+         * represented by the BigInt. The comparison is consistent with the internal
+         * representation, where digits are stored in reverse order
+         * (least-significant digit at index 0) and no leading zeros are present.
+         *
+         * This function provides a strong total ordering, meaning:
+         *  - All BigInt values are comparable.
+         *  - Equality and ordering behave exactly like built-in integer types.
+         *
+         * @param other The BigInt to compare against.
+         *
+         * @return std::strong_ordering
+         *         - std::strong_ordering::less    if *this < other
+         *         - std::strong_ordering::equal   if *this == other
+         *         - std::strong_ordering::greater if *this > other
+         *
+         * This function is intended to be used by the three-way comparison operator
+         * (operator<=>), enabling automatic generation of all comparison operators
+         * (<, <=, >, >=, ==, !=) in accordance with C++20 ordering rules.
+         */
+        [[nodiscard]] std::strong_ordering compare(const BigInt &other) const;
+
+        std::strong_ordering operator<=>(const BigInt& other) const { return compare(other); }
+        bool operator==(const BigInt& other) const = default;
 
         [[nodiscard]] BigInt add(const BigInt &other) const;
 

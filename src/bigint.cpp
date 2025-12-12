@@ -89,6 +89,25 @@ namespace arbys::bignumbers {
         return {};
     }
 
+    std::strong_ordering BigInt::compare(const BigInt &other) const {
+        if (this->m_length != other.m_length) {
+            return (this->m_length < other.m_length)
+                    ? std::strong_ordering::less
+                    : std::strong_ordering::greater;
+        }
+
+        for (size_t i = 0; i < this->m_length; i++) {
+            const size_t j = this->m_length - 1 - i;
+            if (this->m_digits[j] != other.m_digits[j]) {
+                return (this->m_digits[j] < other.m_digits[j])
+                        ? std::strong_ordering::less
+                        : std::strong_ordering::greater;
+            }
+        }
+
+        return std::strong_ordering::equal;
+    }
+
     uint8_t BigInt::getDigit(const size_t index) const {
         return m_digits[m_length - 1 - index];
     }
