@@ -1,27 +1,42 @@
 #include <gtest/gtest.h>
 
-#include "bigint.h"
+#include "../../include/arbys/bignumbers/bigint.h"
 
 namespace arbys::bignumbers::tests::helpers {
-    void expectCompare(const BigInt& a, const BigInt& b, const std::strong_ordering expected) {
-        const auto r = a.compare(b);
+    std::string big_int_string_div(const std::string &a, const std::string &b) {
+        const long long lhs  = std::stoll(a);
+        const long long rhs  = std::stoll(b);
+        if (rhs == 0)
+            throw std::invalid_argument("division by zero");
+        const long long res = lhs / rhs;
+        return std::to_string(res);
+    }
+
+    void expect_compare_eq(const BigInt& a, const BigInt& b, const std::strong_ordering expected) {
+        const auto r = a.cmp(b);
         EXPECT_EQ(r, expected);
     }
 
-    std::string makeIncreasing(const size_t len) {
+    std::string make_increasing(const size_t len) {
         std::string s;
         for (size_t i = 1; i <= len; i++)
             s += std::to_string(i % 10);
         return s;
     }
 
-    void expectBigIntEquals(const BigInt &bn, const std::string &s) {
-        ASSERT_EQ(bn.getLength(), s.size());
+    void expect_eq(const BigInt &bn, const std::string &s) {
+        ASSERT_EQ(bn.get_length(), s.size());
         for (size_t i = 0; i < s.size(); i++)
-            EXPECT_EQ(bn.getDigit(i), s[i] - '0');
+            EXPECT_EQ(bn.get_digit(i), s[i] - '0');
     }
 
-    std::string bigIntegerStringAdd(const std::string& a, const std::string& b) {
+    void expect_eq(const BigInt &bn, const BigInt &other) {
+        ASSERT_EQ(bn.get_length(), other.get_length());
+        for (size_t i = 0; i < bn.get_length(); i++)
+            EXPECT_EQ(bn.get_digit(i), other.get_digit(i));
+    }
+
+    std::string big_int_string_add(const std::string& a, const std::string& b) {
         // Ensure both inputs contain only digits
         for (const char ch : a)
             if (!std::isdigit(static_cast<unsigned char>(ch)))
