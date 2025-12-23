@@ -1,8 +1,5 @@
-//
-// Created by rares on 12/20/25.
-//
-
 #include "arbys/bignumbers/bigint.h"
+#include "../detail/detail.h"
 
 namespace arbys::bignumbers {
     BigInt BigInt::mul(const BigInt &other) const {

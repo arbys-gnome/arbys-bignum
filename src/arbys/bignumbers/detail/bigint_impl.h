@@ -1,7 +1,7 @@
 #ifndef BIGNUMBERS_BIGINT_IMPL_H
 #define BIGNUMBERS_BIGINT_IMPL_H
 
-#include "../../include/arbys/bignumbers/bigint.h"
+#include "arbys/bignumbers/bigint.h"
 
 namespace arbys::bignumbers {
 

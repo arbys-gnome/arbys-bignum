@@ -26,23 +26,24 @@ endif()
 # ============================================================================
 
 set(BIGINT_SOURCES
-    src/bigint/bigint.cpp
-    src/bigint/add.cpp
-    src/bigint/sub.cpp
-    src/bigint/mul.cpp
-    src/bigint/div.cpp
-    src/bigint/cmp.cpp
-    src/bigint/from_string.cpp
+        src/arbys/bignumbers/bigint/bigint.cpp
+        src/arbys/bignumbers/bigint/add.cpp
+        src/arbys/bignumbers/bigint/sub.cpp
+        src/arbys/bignumbers/bigint/mul.cpp
+        src/arbys/bignumbers/bigint/div.cpp
+        src/arbys/bignumbers/bigint/cmp.cpp
+        src/arbys/bignumbers/bigint/from_string.cpp
 )
 
 set(DETAIL_SOURCES
-        src/detail/parse_digits.cpp
-        src/detail/normalize.cpp
-        src/detail/cmp_abs.cpp
-        src/detail/add_abs.cpp
-        src/detail/sub_abs.cpp
-        src/detail/mul_abs.cpp
-        src/detail/bigint_impl.h
+        src/arbys/bignumbers/detail/parse_digits.cpp
+        src/arbys/bignumbers/detail/normalize.cpp
+        src/arbys/bignumbers/detail/cmp_abs.cpp
+        src/arbys/bignumbers/detail/add_abs.cpp
+        src/arbys/bignumbers/detail/sub_abs.cpp
+        src/arbys/bignumbers/detail/mul_abs.cpp
+        src/arbys/bignumbers/detail/bigint_impl.h
+        src/arbys/bignumbers/detail/config.h
 )
 
 add_library(BigNumbers

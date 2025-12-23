@@ -14,20 +14,6 @@ namespace arbys::bignumbers {
 
     class BigInt;
 
-    namespace detail {
-
-        std::expected<BigInt, ParseError> parse_digits(std::string_view, bool);
-        std::strong_ordering cmp_abs(const BigInt&, const BigInt&);
-        BigInt add_abs(const BigInt&, const BigInt&);
-        BigInt sub_abs(const BigInt&, const BigInt&);
-        std::pair<BigInt, BigInt> split_at(const BigInt&, std::ptrdiff_t);
-        BigInt shift_left(const BigInt&, std::ptrdiff_t);
-        BigInt simple_multiply(const BigInt&, const BigInt&);
-        BigInt karatsuba_multiply(const BigInt&, const BigInt&);
-        BigInt mul_abs(const BigInt&, const BigInt&);
-
-    }
-
     class BigInt {
     public:
         BigInt();
