@@ -83,10 +83,10 @@ namespace arbys::bignumbers {
 
         bool operator==(const BigInt& other) const = default;
 
-        BigInt add(const BigInt &other) const;
-        BigInt sub(const BigInt &other) const;
-        BigInt mul(const BigInt &other) const;
-        BigInt div(long long other) const;
+        [[nodiscard]] BigInt add(const BigInt &other) const;
+        [[nodiscard]] BigInt sub(const BigInt &other) const;
+        [[nodiscard]] BigInt mul(const BigInt &other) const;
+        [[nodiscard]] BigInt div(long long other) const;
 
         BigInt operator+(const BigInt &other) const;
         BigInt operator-(const BigInt &other) const;
@@ -94,6 +94,7 @@ namespace arbys::bignumbers {
         BigInt operator/(long long other) const;
 
         BigInt *to_abs();
+        [[nodiscard]] std::string to_string() const;
 
     private:
         std::vector<limb_t> digits_;

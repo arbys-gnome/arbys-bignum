@@ -35,11 +35,9 @@ namespace arbys::bignumbers::detail {
             result_digits[i] = static_cast<limb_t>(diff);
         }
 
-        while (result_digits.size() > 1 && result_digits.back() == 0) {
-            result_digits.pop_back();
-        }
+        normalize_abs(result_digits);
 
-        return BigIntImpl::create(false, std::move(result_digits), result_digits.size());
+        return BigIntImpl::create(false, result_digits, result_digits.size());
     }
 
 }

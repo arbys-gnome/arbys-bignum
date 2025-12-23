@@ -29,5 +29,12 @@ namespace arbys::bignumbers {
         return this;
     }
 
+    std::string BigInt::to_string() const {
+        std::string s;
+        for (const auto &digit : digits_ | std::views::reverse) {
+            s += std::to_string(digit);
+        }
+        return s;
+    }
 } // arbys::bignumbers
 

@@ -62,8 +62,12 @@ namespace arbys::bignumbers::detail {
                 carry = prod / 10;
             }
 
-            if (carry > 0) {
-                result_digits[i + rhs_digits.size()] += static_cast<limb_t>(carry);
+            size_t pos = i + rhs_digits.size();
+            while (carry > 0) {
+                const uint64_t sum = result_digits[pos] + carry;
+                result_digits[pos] = static_cast<limb_t>(sum % 10);
+                carry = sum / 10;
+                ++pos;
             }
         }
 
@@ -75,6 +79,7 @@ namespace arbys::bignumbers::detail {
     }
 
     BigInt karatsuba_multiply(const BigInt& lhs, const BigInt& rhs) {
+        // TODO: fix karatsuba
         constexpr size_t karatsuba_threshold = 32;
 
         const size_t lhs_len = BigIntImpl::length(lhs);
@@ -97,11 +102,15 @@ namespace arbys::bignumbers::detail {
         const BigInt sum2 = low2 + high2;
         const BigInt z1 = karatsuba_multiply(sum1, sum2) - z2 - z0;
 
-        return shift_left(z2, 2 * mid) + shift_left(z1, mid) + z0;
+        auto result = shift_left(z2, 2 * mid) + shift_left(z1, mid) + z0;
+
+        normalize(result);
+
+        return result;
     }
 
     BigInt mul_abs(const BigInt& lhs, const BigInt& rhs) {
-        return karatsuba_multiply(lhs, rhs);
+        return simple_multiply(lhs, rhs);
     }
 
 }

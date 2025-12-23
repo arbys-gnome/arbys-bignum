@@ -24,8 +24,9 @@ namespace arbys::bignumbers::tests {
     }
 
     TEST(BigIntDivWithLongLongTest, DivisionByZeroLLThrows) {
-        BigInt a = BigInt::from_string("100").value();
-        EXPECT_THROW(a.div(0LL), std::invalid_argument);
+        const BigInt lhs = BigInt::from_string("100").value();
+        constexpr long long rhs = 0LL;
+        EXPECT_THROW(lhs / rhs, std::invalid_argument);
     }
 
     TEST(BigIntDivWithLongLongTest, VeryLargeBigIntDivLL) {

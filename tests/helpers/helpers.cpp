@@ -1,4 +1,7 @@
+#include <fstream>
 #include <gtest/gtest.h>
+
+#include <print>
 
 #include "../../include/arbys/bignumbers/bigint.h"
 
@@ -24,10 +27,17 @@ namespace arbys::bignumbers::tests::helpers {
         return s;
     }
 
-    void expect_eq(const BigInt &bn, const std::string &s) {
+    void expect_eq(const BigInt &bn, std::string s) {
+        if (s.starts_with("-")) {
+            EXPECT_EQ(bn.is_negative(), true);
+            s = s.substr(1);
+        } else {
+            EXPECT_EQ(bn.is_negative(), false);
+        }
         ASSERT_EQ(bn.get_length(), s.size());
-        for (size_t i = 0; i < s.size(); i++)
+        for (size_t i = 0; i < s.size(); i++) {
             EXPECT_EQ(bn.get_digit(i), s[i] - '0');
+        }
     }
 
     void expect_eq(const BigInt &bn, const BigInt &other) {

@@ -173,7 +173,7 @@ namespace arbys::bignumbers::tests {
         const auto result = a * b;
 
         // 999...999 (100 digits) * 999...999 (100 digits)
-        // = 999...998000...001 (199 digits)
+        // = 999...998000...001 (200 digits)
         std::string expected(99, '9');
         expected += "8";
         expected += std::string(99, '0');
@@ -203,7 +203,7 @@ namespace arbys::bignumbers::tests {
         const auto b = BigInt::from_string("7890123456789").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "974023703750074784");
+        helpers::expect_eq(result, "974083081481342784");
     }
 
     TEST_F(BigIntMulTest, SameNumberMultipliedByItself) {
