@@ -4,15 +4,15 @@
 #include <string>
 
 namespace arbys::bignumbers {
-    class BigInt;
+    class big_int;
 }
 
 namespace arbys::bignumbers::tests::helpers {
     std::string big_int_string_div(const std::string &a, const std::string &b);
-    void expect_compare_eq(const BigInt& a, const BigInt& b, std::strong_ordering expected);
+    void expect_compare_eq(const big_int& a, const big_int& b, std::strong_ordering expected);
     std::string make_increasing(size_t len);
-    void expect_eq(const BigInt &bn, std::string s);
-    void expect_eq(const BigInt &bn, const BigInt &other);
+    void expect_eq(const big_int &bn, std::string s);
+    void expect_eq(const big_int &bn1, const big_int &bn2);
     std::string big_int_string_add(const std::string& a, const std::string& b);
 
 

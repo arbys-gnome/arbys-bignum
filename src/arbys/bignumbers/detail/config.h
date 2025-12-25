@@ -7,6 +7,7 @@ namespace arbys::bignumbers::detail {
     using dlimb_t = uint64_t;
     static constexpr unsigned LIMB_BITS = 32;
     static constexpr dlimb_t BASE = dlimb_t{1} << LIMB_BITS;
+
 }
 
 #endif //BIGNUMBERS_CONFIG_H

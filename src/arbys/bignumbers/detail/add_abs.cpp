@@ -1,41 +1,43 @@
-#include "arbys/bignumbers/bigint.h"
-#include "bigint_impl.h"
+#include "arbys/bignumbers/big_int.h"
+#include "big_int_internal.h"
 #include "detail.h"
 
 namespace arbys::bignumbers::detail {
 
-    BigInt add_abs(const BigInt& lhs, const BigInt& rhs) {
-        const BigInt* bigger = (BigIntImpl::length(lhs) >= BigIntImpl::length(rhs)) ? &lhs : &rhs;
-        const BigInt* smaller = (bigger == &lhs) ? &rhs : &lhs;
+    big_int add_abs(const big_int& lhs, const big_int& rhs) {
+        const big_int* bigger = (big_int_access::length(lhs) >= big_int_access::length(rhs)) ? &lhs : &rhs;
+        const big_int* smaller = (bigger == &lhs) ? &rhs : &lhs;
 
-        const auto& bigger_digits = BigIntImpl::digits(*bigger);
-        const auto& smaller_digits = BigIntImpl::digits(*smaller);
-        const size_t bigger_len = BigIntImpl::length(*bigger);
-        const size_t smaller_len = BigIntImpl::length(*smaller);
+        const auto& bigger_limbs = big_int_access::limbs(*bigger);
+        const auto& smaller_limbs = big_int_access::limbs(*smaller);
+        const size_t bigger_len = big_int_access::length(*bigger);
+        const size_t smaller_len = big_int_access::length(*smaller);
 
         // +1 for possible carry
-        std::vector<limb_t> digits(bigger_len + 1, 0);
-        limb_t carry = 0;
+        std::vector<limb_t> result(bigger_len + 1);
+        dlimb_t carry = 0;
 
+        // Add overlapping limbs
         for (size_t i = 0; i < smaller_len; ++i) {
-            const uint16_t sum = bigger_digits[i] + smaller_digits[i] + carry;
-            digits[i] = sum % 10;
-            carry = sum / 10;
+            const dlimb_t sum = dlimb_t{bigger_limbs[i]} + smaller_limbs[i] + carry;
+            result[i] = static_cast<limb_t>(sum);  // Lower 32 bits
+            carry = sum >> LIMB_BITS;              // Upper 32 bits (0 or 1)
         }
 
+        // Copy remaining limbs from bigger number
         for (size_t i = smaller_len; i < bigger_len; ++i) {
-            const uint16_t sum = bigger_digits[i] + carry;
-            digits[i] = sum % 10;
-            carry = sum / 10;
+            const dlimb_t sum = dlimb_t{bigger_limbs[i]} + carry;
+            result[i] = static_cast<limb_t>(sum);
+            carry = sum >> LIMB_BITS;
         }
 
+        // Handle final carry
         if (carry) {
-            digits[bigger_len] = carry;
+            result[bigger_len] = static_cast<limb_t>(carry);
+        } else {
+            result.resize(bigger_len);  // No carry, remove extra slot
         }
 
-        normalize_abs(digits);
-
-        // Use factory method to create result
-        return BigIntImpl::create(false, digits, digits.size());
+        return big_int_access::create(false, std::move(result));
     }
 }

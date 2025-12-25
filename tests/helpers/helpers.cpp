@@ -2,8 +2,10 @@
 #include <gtest/gtest.h>
 
 #include <print>
+#include <ranges>
 
-#include "../../include/arbys/bignumbers/bigint.h"
+#include "../../include/arbys/bignumbers/big_int.h"
+#include "../../src/arbys/bignumbers/detail/big_int_internal.h"
 
 namespace arbys::bignumbers::tests::helpers {
     std::string big_int_string_div(const std::string &a, const std::string &b) {
@@ -15,8 +17,8 @@ namespace arbys::bignumbers::tests::helpers {
         return std::to_string(res);
     }
 
-    void expect_compare_eq(const BigInt& a, const BigInt& b, const std::strong_ordering expected) {
-        const auto r = a.cmp(b);
+    void expect_compare_eq(const big_int& a, const big_int& b, const std::strong_ordering expected) {
+        const auto r = a <=> b;
         EXPECT_EQ(r, expected);
     }
 
@@ -27,23 +29,17 @@ namespace arbys::bignumbers::tests::helpers {
         return s;
     }
 
-    void expect_eq(const BigInt &bn, std::string s) {
-        if (s.starts_with("-")) {
-            EXPECT_EQ(bn.is_negative(), true);
-            s = s.substr(1);
-        } else {
-            EXPECT_EQ(bn.is_negative(), false);
-        }
-        ASSERT_EQ(bn.get_length(), s.size());
-        for (size_t i = 0; i < s.size(); i++) {
-            EXPECT_EQ(bn.get_digit(i), s[i] - '0');
-        }
+    void expect_eq(const big_int &bn, std::string s) {
+        ASSERT_EQ(bn.to_string(), s);
     }
 
-    void expect_eq(const BigInt &bn, const BigInt &other) {
-        ASSERT_EQ(bn.get_length(), other.get_length());
-        for (size_t i = 0; i < bn.get_length(); i++)
-            EXPECT_EQ(bn.get_digit(i), other.get_digit(i));
+    void expect_eq(const big_int &bn1, const big_int &bn2) {
+        EXPECT_EQ(bn1.is_negative(), bn2.is_negative());
+        ASSERT_EQ(detail::big_int_access::length(bn1), detail::big_int_access::length(bn2));
+        for (const auto &[l1, l2]
+            : std::views::zip(detail::big_int_access::limbs(bn1), detail::big_int_access::limbs(bn2))) {
+            EXPECT_EQ(l1, l2);
+        }
     }
 
     std::string big_int_string_add(const std::string& a, const std::string& b) {

@@ -26,24 +26,20 @@ endif()
 # ============================================================================
 
 set(BIGINT_SOURCES
-        src/arbys/bignumbers/bigint/bigint.cpp
-        src/arbys/bignumbers/bigint/add.cpp
-        src/arbys/bignumbers/bigint/sub.cpp
-        src/arbys/bignumbers/bigint/mul.cpp
-        src/arbys/bignumbers/bigint/div.cpp
-        src/arbys/bignumbers/bigint/cmp.cpp
-        src/arbys/bignumbers/bigint/from_string.cpp
+        src/arbys/bignumbers/bigint/big_int.cpp
 )
 
 set(DETAIL_SOURCES
-        src/arbys/bignumbers/detail/parse_digits.cpp
+        src/arbys/bignumbers/detail/parse_limbs.cpp
         src/arbys/bignumbers/detail/normalize.cpp
         src/arbys/bignumbers/detail/cmp_abs.cpp
         src/arbys/bignumbers/detail/add_abs.cpp
         src/arbys/bignumbers/detail/sub_abs.cpp
         src/arbys/bignumbers/detail/mul_abs.cpp
-        src/arbys/bignumbers/detail/bigint_impl.h
         src/arbys/bignumbers/detail/config.h
+        src/arbys/bignumbers/detail/div_abs.cpp
+        src/arbys/bignumbers/detail/big_int_internal.h
+        include/arbys/bignumbers/results.h
 )
 
 add_library(BigNumbers

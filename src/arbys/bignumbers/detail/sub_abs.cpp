@@ -1,43 +1,43 @@
-#include "arbys/bignumbers/bigint.h"
-#include "bigint_impl.h"
+#include "arbys/bignumbers/big_int.h"
+#include "big_int_internal.h"
 #include "detail.h"
 
 namespace arbys::bignumbers::detail {
 
-    BigInt sub_abs(const BigInt& a, const BigInt& b) {
-        const auto& a_digits = BigIntImpl::digits(a);
-        const auto& b_digits = BigIntImpl::digits(b);
-        const size_t a_len = BigIntImpl::length(a);
-        const size_t b_len = BigIntImpl::length(b);
+    big_int sub_abs(const big_int& a, const big_int& b) {
+        const auto& a_limbs = big_int_access::limbs(a);
+        const auto& b_limbs = big_int_access::limbs(b);
+        const size_t a_len = big_int_access::length(a);
+        const size_t b_len = big_int_access::length(b);
 
-        std::vector<limb_t> result_digits(a_len, 0);
+        std::vector<limb_t> result_limbs(a_len, 0);
         int borrow = 0;
 
         for (size_t i = 0; i < b_len; ++i) {
-            int diff = a_digits[i] - b_digits[i] - borrow;
+            int diff = a_limbs[i] - b_limbs[i] - borrow;
             if (diff < 0) {
                 diff += 10;
                 borrow = 1;
             } else {
                 borrow = 0;
             }
-            result_digits[i] = static_cast<limb_t>(diff);
+            result_limbs[i] = static_cast<limb_t>(diff);
         }
 
         for (size_t i = b_len; i < a_len; ++i) {
-            int diff = a_digits[i] - borrow;
+            int diff = a_limbs[i] - borrow;
             if (diff < 0) {
                 diff += 10;
                 borrow = 1;
             } else {
                 borrow = 0;
             }
-            result_digits[i] = static_cast<limb_t>(diff);
+            result_limbs[i] = static_cast<limb_t>(diff);
         }
 
-        normalize_abs(result_digits);
+        normalize_abs(result_limbs);
 
-        return BigIntImpl::create(false, result_digits, result_digits.size());
+        return big_int_access::create(false, result_limbs);
     }
 
 }

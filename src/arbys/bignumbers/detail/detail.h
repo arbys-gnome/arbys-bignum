@@ -1,16 +1,17 @@
 #ifndef SRC_DETAILS_DETAILS_HPP_
 #define SRC_DETAILS_DETAILS_HPP_
 
+#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignumbers/errors.h"
+#include "arbys/bignumbers/results.h"
+#include "config.h"
+
 #include <expected>
 #include <locale>
 #include <string_view>
 #include <vector>
 
-#include "arbys/bignumbers/errors.h"
-#include "arbys/bignumbers/bigint.h"
-
 namespace arbys::bignumbers::detail {
-
     constexpr bool is_space(unsigned char c) noexcept {
         return std::isspace(c);
     }
@@ -27,33 +28,45 @@ namespace arbys::bignumbers::detail {
         return sv;
     }
 
-    std::expected<BigInt, ParseError>
-    parse_digits(std::string_view input, bool isNegative);
+    std::expected<big_int, errors::ParseError>
+    parse_limbs(std::string_view input, bool is_negative);
+
+    std::expected<big_int, errors::ParseError>
+    parse_limbs_optimized(std::string_view input, bool is_negative);
 
     void normalize_abs(std::vector<limb_t>& digits);
+    void normalize_abs_simple(std::vector<limb_t>& digits);
     void normalize(bool& is_negative, std::vector<limb_t>& digits);
-    void normalize(BigInt& bi);
 
-    std::strong_ordering cmp_abs(const BigInt &lhs, const BigInt &rhs);
+    std::strong_ordering cmp_abs(const big_int &lhs, const big_int &rhs);
 
+    big_int add_abs(const big_int& lhs, const big_int& rhs);
 
-    BigInt add_abs(const BigInt& lhs, const BigInt& rhs);
-
-    BigInt sub_abs(const BigInt& a, const BigInt& b);
+    big_int sub_abs(const big_int& a, const big_int& b);
 
     // Helper to split a BigInt into two halves at position mid
-    std::pair<BigInt, BigInt> split_at(const BigInt &num, std::ptrdiff_t mid);
+    std::pair<big_int, big_int> split_at(const big_int &num, std::ptrdiff_t mid);
 
     // Shift left by n digits (multiply by base^n)
-    BigInt shift_left(const BigInt &num, size_t n);
+    big_int shift_left(const big_int &num, size_t n);
 
     // Karatsuba multiplication for unsigned BigInts
-    BigInt karatsuba_multiply(const BigInt &lhs, const BigInt &rhs);
+    big_int karatsuba_multiply(const big_int &lhs, const big_int &rhs);
 
     // Simple O(n^2) multiplication for base case
-    BigInt simple_multiply(const BigInt &lhs, const BigInt &rhs);
+    big_int simple_multiply(const big_int &lhs, const big_int &rhs);
 
-    BigInt mul_abs(const BigInt &lhs, const BigInt &rhs);
+    big_int mul_abs(const big_int &lhs, const big_int &rhs);
+
+    [[nodiscard]] std::expected<DivisionResult, errors::ArithmeticError>
+    div_mod_abs(const big_int& dividend, const big_int& divisor) noexcept;
+
+    [[nodiscard]] std::expected<big_int, errors::ArithmeticError>
+    div_abs(const big_int& dividend, const big_int& divisor) noexcept;
+
+    [[nodiscard]] std::expected<big_int, errors::ArithmeticError>
+    mod_abs(const big_int& dividend, const big_int& divisor) noexcept;
+
 } // namespace detail
 
 #endif
