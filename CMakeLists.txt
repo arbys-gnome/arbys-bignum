@@ -61,6 +61,14 @@ if(BIGNUMBERS_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfigVersion.cmake"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY SameMajorVersion
+)
+
 include(GNUInstallDirs)
 
 install(TARGETS BigNumbers
@@ -79,4 +87,16 @@ install(EXPORT BigNumbersTargets
     FILE BigNumbersTargets.cmake
     NAMESPACE BigNumbers::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BigNumbers
+)
+
+configure_package_config_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/BigNumbersConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfig.cmake"
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BigNumbers
+)
+
+install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfigVersion.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BigNumbers
 )

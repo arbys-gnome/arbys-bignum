@@ -1,3 +1,17 @@
+# CMake build directories
+/build/
+/cmake-build-*/
+/out/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+cmake_install.cmake
+
+# CTest / test discovery
+cmake_test_discover*.json
+
 # Prerequisites
 *.d
 
