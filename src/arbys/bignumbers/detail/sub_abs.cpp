@@ -1,43 +1,62 @@
+#include <ranges>
+
 #include "arbys/bignumbers/big_int.h"
 #include "big_int_internal.h"
 #include "detail.h"
 
 namespace arbys::bignumbers::detail {
 
-    big_int sub_abs(const big_int& a, const big_int& b) {
-        const auto& a_limbs = big_int_access::limbs(a);
-        const auto& b_limbs = big_int_access::limbs(b);
-        const size_t a_len = big_int_access::length(a);
-        const size_t b_len = big_int_access::length(b);
+    // this function assumes that a > b
+    big_int sub_abs(const big_int &bigger, const big_int &smaller) {
+        const auto &bigger_limbs = big_int_access::limbs(bigger);
+        const auto &smaller_limbs = big_int_access::limbs(smaller);
 
-        std::vector<limb_t> result_limbs(a_len, 0);
-        int borrow = 0;
+        const size_t bigger_len = big_int_access::length(bigger);
+        const size_t smaller_len = big_int_access::length(smaller);
 
-        for (size_t i = 0; i < b_len; ++i) {
-            int diff = a_limbs[i] - b_limbs[i] - borrow;
+        std::vector<limb_t> result;
+        result.reserve(bigger_len);
+
+        s_dlimb_t borrow = 0;
+
+        // subtract common limbs
+        for (size_t i = 0; i < smaller_len; ++i) {
+            s_dlimb_t diff =
+                static_cast<s_dlimb_t>(bigger_limbs[i])
+              - static_cast<s_dlimb_t>(smaller_limbs[i])
+              - borrow;
+
             if (diff < 0) {
-                diff += 10;
+                diff += BASE;
                 borrow = 1;
             } else {
                 borrow = 0;
             }
-            result_limbs[i] = static_cast<limb_t>(diff);
+
+            result.push_back(static_cast<limb_t>(diff));
         }
 
-        for (size_t i = b_len; i < a_len; ++i) {
-            int diff = a_limbs[i] - borrow;
+        // propagate borrow through remaining limbs
+        for (size_t i = smaller_len; i < bigger_len; ++i) {
+            s_dlimb_t diff =
+                static_cast<s_dlimb_t>(bigger_limbs[i])
+              - borrow;
+
             if (diff < 0) {
-                diff += 10;
+                diff += BASE;
                 borrow = 1;
             } else {
                 borrow = 0;
             }
-            result_limbs[i] = static_cast<limb_t>(diff);
+
+            result.push_back(static_cast<limb_t>(diff));
         }
 
-        normalize_abs(result_limbs);
+        // borrow must be zero here
+        // assert(borrow == 0);
 
-        return big_int_access::create(false, result_limbs);
+        normalize_abs(result);
+        return big_int_access::create(false, std::move(result));
     }
 
 }

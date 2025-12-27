@@ -42,7 +42,7 @@ namespace arbys::bignumbers::detail {
 
     big_int add_abs(const big_int& lhs, const big_int& rhs);
 
-    big_int sub_abs(const big_int& a, const big_int& b);
+    big_int sub_abs(const big_int& bigger, const big_int& smaller);
 
     // Helper to split a BigInt into two halves at position mid
     std::pair<big_int, big_int> split_at(const big_int &num, std::ptrdiff_t mid);

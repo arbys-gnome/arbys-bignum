@@ -4,30 +4,30 @@
 #include "../helpers/helpers.h"
 
 namespace arbys::bignumbers::tests::sub {
-    TEST(BigIntSub, SimpleNoBorrow) {
-        const big_int a = big_int::from_string("123").value();
-        const big_int b = big_int::from_string("11").value();
+    TEST(BigIntSubTest, SimpleNoBorrow) {
+        const big_int a = 123;
+        const big_int b = 11;
         const big_int r = a - b;
         EXPECT_BI_EQ(r, "112");
     }
 
-    TEST(BigIntSub, SimpleBorrow) {
-        const big_int a = big_int::from_string("223").value();
-        const big_int b = big_int::from_string("104").value();
+    TEST(BigIntSubTest, SimpleBorrow) {
+        const big_int a = 223;
+        const big_int b = 104;
         const big_int r = a - b;
         EXPECT_BI_EQ(r, "119");
     }
 
-    TEST(BigNumbrSub, SimpleLongCarry) {
-        const big_int a = big_int::from_string("20003").value();
-        const big_int b = big_int::from_string("1004").value();
+    TEST(BigIntSubTest, SimpleLongCarry) {
+        const big_int a = 20003;
+        const big_int b = 1004;
         const big_int r = a - b;
         EXPECT_BI_EQ(r, "18999");
     }
 
-    TEST(BigIntSub, SubToZero) {
-        const big_int a = big_int::from_string("0").value();
-        const big_int b = big_int::from_string("0").value();
+    TEST(BigIntSubTest, SubToZero) {
+        const big_int a = 0;
+        const big_int b = 0;
         const big_int r = a - b;
         EXPECT_BI_EQ(r, "0");
 
