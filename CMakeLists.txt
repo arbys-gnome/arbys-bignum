@@ -6,10 +6,6 @@ project(BigNumbers
     LANGUAGES CXX
 )
 
-# ============================================================================
-# Project-wide settings
-# ============================================================================
-
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -20,10 +16,6 @@ if(PROJECT_IS_TOP_LEVEL)
 else()
     option(BIGNUMBERS_BUILD_TESTS "Build BigNumbers tests" OFF)
 endif()
-
-# ============================================================================
-# Library target
-# ============================================================================
 
 set(BIGINT_SOURCES
         src/arbys/bignumbers/bigint/big_int.cpp
@@ -50,10 +42,6 @@ add_library(BigNumbers
 # Add an alias for use when included as a subdirectory
 add_library(BigNumbers::BigNumbers ALIAS BigNumbers)
 
-# ============================================================================
-# Target properties
-# ============================================================================
-
 target_include_directories(BigNumbers
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -68,18 +56,10 @@ target_compile_options(BigNumbers PRIVATE
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic>
 )
 
-# ============================================================================
-# Testing
-# ============================================================================
-
 if(BIGNUMBERS_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
-
-# ============================================================================
-# Installation
-# ============================================================================
 
 include(GNUInstallDirs)
 

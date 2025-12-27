@@ -34,15 +34,14 @@ namespace arbys::bignumbers::detail {
     std::expected<big_int, errors::ParseError>
     parse_limbs_optimized(std::string_view input, bool is_negative);
 
-    void normalize_abs(std::vector<limb_t>& digits);
-    void normalize_abs_simple(std::vector<limb_t>& digits);
-    void normalize(bool& is_negative, std::vector<limb_t>& digits);
+    void trim_leading_zeros(std::vector<limb_t> &limbs);
+    void propagate_carries(std::vector<limb_t> &limbs);
 
     std::strong_ordering cmp_abs(const big_int &lhs, const big_int &rhs);
 
     big_int add_abs(const big_int& lhs, const big_int& rhs);
 
-    big_int sub_abs(const big_int& bigger, const big_int& smaller);
+    big_int sub_abs(const big_int& lhs, const big_int& rhs);
 
     // Helper to split a BigInt into two halves at position mid
     std::pair<big_int, big_int> split_at(const big_int &num, std::ptrdiff_t mid);

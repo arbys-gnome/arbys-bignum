@@ -1,7 +1,7 @@
 #include "arbys/bignumbers/big_int.h"
+#include "../detail/big_int_internal.h"
 #include "../detail/config.h"
 #include "../detail/detail.h"
-#include "../detail/big_int_internal.h"
 
 #include <algorithm>
 #include <cctype>
@@ -15,26 +15,24 @@ big_int::big_int() : impl_(std::make_unique<detail::big_int_impl>()) {}
 
 big_int::~big_int() = default;
 
-big_int::big_int(const big_int& other)
-    : impl_(std::make_unique<detail::big_int_impl>(*other.impl_)) {}
+big_int::big_int(const big_int &other) : impl_(std::make_unique<detail::big_int_impl>(*other.impl_)) {}
 
-big_int::big_int(big_int&& other) noexcept = default;
+big_int::big_int(big_int &&other) noexcept = default;
 
-big_int& big_int::operator=(const big_int& other) {
+big_int &big_int::operator=(const big_int &other) {
     if (this != &other) {
         impl_ = std::make_unique<detail::big_int_impl>(*other.impl_);
     }
     return *this;
 }
 
-big_int& big_int::operator=(big_int&& other) noexcept = default;
+big_int &big_int::operator=(big_int &&other) noexcept = default;
 
 big_int::big_int(std::unique_ptr<detail::big_int_impl> impl) : impl_(std::move(impl)) {}
 
-template<std::integral T>
-big_int big_int::from_integer(T value) {
-    bool is_negative = value < 0;
-    using Unsigned = std::make_unsigned_t<T>;
+template <std::integral T> big_int big_int::from_integer(T value) {
+    bool is_negative   = value < 0;
+    using Unsigned     = std::make_unsigned_t<T>;
     Unsigned abs_value = is_negative ? -static_cast<Unsigned>(value) : static_cast<Unsigned>(value);
 
     std::vector<detail::limb_t> limbs;
@@ -66,8 +64,7 @@ template big_int big_int::from_integer<unsigned int>(unsigned int);
 template big_int big_int::from_integer<unsigned long>(unsigned long);
 template big_int big_int::from_integer<unsigned long long>(unsigned long long);
 
-std::expected<big_int, errors::ParseError>
-big_int::from_string(std::string_view input) {
+std::expected<big_int, errors::ParseError> big_int::from_string(std::string_view input) {
     input = detail::trim_view(input);
     if (input.empty()) {
         return std::unexpected(errors::ParseError::EmptyInput);
@@ -88,8 +85,7 @@ big_int::from_string(std::string_view input) {
     return detail::parse_limbs(input, is_negative);
 }
 
-std::expected<big_int, errors::ParseError>
-big_int::from_string(std::string_view input, const char separator) {
+std::expected<big_int, errors::ParseError> big_int::from_string(std::string_view input, const char separator) {
     input = detail::trim_view(input);
     if (input.empty()) {
         return std::unexpected(errors::ParseError::EmptyInput);
@@ -123,8 +119,10 @@ big_int::from_string(std::string_view input, const char separator) {
     return detail::parse_limbs(compact, is_negative);
 }
 
-std::expected<big_int, errors::ParseError>
-big_int::from_string(std::string_view input, const std::string_view separator) {
+std::expected<big_int, errors::ParseError> big_int::from_string(
+  std::string_view       input,
+  const std::string_view separator
+) {
     if (separator.empty()) {
         return from_string(input);
     }
@@ -146,7 +144,7 @@ big_int::from_string(std::string_view input, const std::string_view separator) {
     compact.reserve(input.size());
 
     while (!input.empty()) {
-        const size_t pos = input.find(separator);
+        const size_t           pos   = input.find(separator);
         const std::string_view chunk = input.substr(0, pos);
 
         for (const char c : chunk) {
@@ -169,17 +167,11 @@ big_int::from_string(std::string_view input, const std::string_view separator) {
     return detail::parse_limbs(compact, is_negative);
 }
 
-size_t big_int::length() const noexcept {
-    return impl_->length();
-}
+size_t big_int::length() const noexcept { return impl_->length(); }
 
-bool big_int::is_negative() const noexcept {
-    return impl_->is_negative_;
-}
+bool big_int::is_negative() const noexcept { return impl_->is_negative_; }
 
-bool big_int::is_zero() const noexcept {
-    return impl_->length_ == 1 && impl_->limbs_[0] == 0;
-}
+bool big_int::is_zero() const noexcept { return impl_->length_ == 1 && impl_->limbs_[0] == 0; }
 
 std::string big_int::to_string() const {
     if (is_zero()) {
@@ -188,10 +180,10 @@ std::string big_int::to_string() const {
 
     // Convert from base 2^32 to base 10
     // Use a temporary copy for the conversion
-    std::vector<detail::limb_t> temp = impl_->limbs_;
-    size_t temp_len = impl_->length_;
-    std::string result;
-    result.reserve(temp_len * 10);  // rough estimate: log10(2^32) ≈ 9.63
+    std::vector<detail::limb_t> temp     = impl_->limbs_;
+    size_t                      temp_len = impl_->length_;
+    std::string                 result;
+    result.reserve(temp_len * 10); // rough estimate: log10(2^32) ≈ 9.63
 
     // Repeatedly divide by 10 to extract decimal digits
     while (temp_len > 1 || temp[0] > 0) {
@@ -200,8 +192,8 @@ std::string big_int::to_string() const {
         // Divide the entire number by 10 (from most significant to least)
         for (size_t i = temp_len; i-- > 0;) {
             const detail::dlimb_t current = (remainder << detail::LIMB_BITS) | temp[i];
-            temp[i] = static_cast<detail::limb_t>(current / 10);
-            remainder = current % 10;
+            temp[i]                       = static_cast<detail::limb_t>(current / 10);
+            remainder                     = current % 10;
         }
 
         // Remove leading zero limbs
@@ -220,11 +212,10 @@ std::string big_int::to_string() const {
     return result;
 }
 
-std::strong_ordering big_int::operator<=>(const big_int& other) const {
+std::strong_ordering big_int::operator<=>(const big_int &other) const {
     // Different signs
     if (impl_->is_negative_ != other.impl_->is_negative_) {
-        return impl_->is_negative_ ? std::strong_ordering::less
-                                   : std::strong_ordering::greater;
+        return impl_->is_negative_ ? std::strong_ordering::less : std::strong_ordering::greater;
     }
 
     // Same sign
@@ -243,13 +234,12 @@ std::strong_ordering big_int::operator<=>(const big_int& other) const {
     return abs_cmp;
 }
 
-bool big_int::operator==(const big_int& other) const {
-    return impl_->is_negative_ == other.impl_->is_negative_ &&
-           impl_->limbs_ == other.impl_->limbs_;
+bool big_int::operator==(const big_int &other) const {
+    return impl_->is_negative_ == other.impl_->is_negative_ && impl_->limbs_ == other.impl_->limbs_;
 }
 
 big_int big_int::abs() const {
-    auto result = std::make_unique<detail::big_int_impl>(*impl_);
+    auto result          = std::make_unique<detail::big_int_impl>(*impl_);
     result->is_negative_ = false;
     return big_int(std::move(result));
 }
@@ -262,9 +252,9 @@ big_int big_int::negate() const {
     return big_int(std::move(result));
 }
 
-big_int big_int::add(const big_int& other) const {
+big_int big_int::add(const big_int &other) const noexcept {
     if (impl_->is_negative_ == other.impl_->is_negative_) {
-        big_int result = detail::add_abs(*this, other);
+        big_int result             = detail::add_abs(*this, other);
         result.impl_->is_negative_ = impl_->is_negative_;
         result.impl_->normalize();
         return result;
@@ -274,41 +264,36 @@ big_int big_int::add(const big_int& other) const {
     const std::strong_ordering cmp = detail::cmp_abs(*this, other);
 
     if (cmp == std::strong_ordering::equal) {
-        return big_int();  // Result is zero
+        return big_int{};
     }
 
     if (cmp == std::strong_ordering::greater) {
-        big_int result = detail::sub_abs(*this, other);
+        big_int result             = detail::sub_abs(*this, other);
         result.impl_->is_negative_ = impl_->is_negative_;
-        result.impl_->normalize();
-        return result;
-    } else {
-        big_int result = detail::sub_abs(other, *this);
-        result.impl_->is_negative_ = other.impl_->is_negative_;
-        result.impl_->normalize();
         return result;
     }
+
+    big_int result             = detail::sub_abs(other, *this);
+    result.impl_->is_negative_ = other.impl_->is_negative_;
+    return result;
 }
 
-big_int big_int::sub(const big_int& other) const {
-    return add(other.negate());
-}
+big_int big_int::sub(const big_int &other) const noexcept { return add(other.negate()); }
 
-big_int big_int::mul(const big_int& other) const {
+big_int big_int::mul(const big_int &other) const noexcept {
     if (is_zero() || other.is_zero()) {
         return big_int();
     }
 
-    big_int result = detail::mul_abs(*this, other);
+    big_int result             = detail::mul_abs(*this, other);
     result.impl_->is_negative_ = impl_->is_negative_ != other.impl_->is_negative_;
     result.impl_->normalize();
     return result;
 }
 
-std::expected<big_int, errors::ArithmeticError>
-big_int::div(const big_int& other) const noexcept {
+std::expected<big_int, errors::ArithmeticError> big_int::div(const big_int &other) const noexcept {
     if (is_zero()) {
-        return big_int();  // 0 / anything = 0 (except 0)
+        return big_int(); // 0 / anything = 0 (except 0)
     }
 
     auto result = detail::div_abs(*this, other);
@@ -317,7 +302,7 @@ big_int::div(const big_int& other) const noexcept {
     }
 
     // Apply sign rules
-    bool result_negative = impl_->is_negative_ != other.impl_->is_negative_;
+    const bool result_negative = impl_->is_negative_ != other.impl_->is_negative_;
     if (result_negative && !result->is_zero()) {
         result->impl_->is_negative_ = true;
     }
@@ -325,10 +310,9 @@ big_int::div(const big_int& other) const noexcept {
     return *result;
 }
 
-std::expected<big_int, errors::ArithmeticError>
-big_int::mod(const big_int& other) const noexcept {
+std::expected<big_int, errors::ArithmeticError> big_int::mod(const big_int &other) const noexcept {
     if (is_zero()) {
-        return big_int();  // 0 % anything = 0 (except 0)
+        return big_int(); // 0 % anything = 0 (except 0)
     }
 
     auto result = detail::mod_abs(*this, other);
@@ -344,8 +328,9 @@ big_int::mod(const big_int& other) const noexcept {
     return *result;
 }
 
-std::expected<std::pair<big_int, big_int>, errors::ArithmeticError>
-big_int::div_mod(const big_int& other) const noexcept {
+std::expected<std::pair<big_int, big_int>, errors::ArithmeticError> big_int::div_mod(
+  const big_int &other
+) const noexcept {
     if (is_zero()) {
         return std::pair{big_int(), big_int()};
     }
@@ -369,7 +354,7 @@ big_int::div_mod(const big_int& other) const noexcept {
     return std::pair{std::move(result->quotient), std::move(result->remainder)};
 }
 
-big_int big_int::operator/(const big_int& other) const {
+big_int big_int::operator/(const big_int &other) const {
     auto result = div(other);
     if (!result) {
         throw std::domain_error(std::string(errors::to_string(result.error())));
@@ -377,7 +362,7 @@ big_int big_int::operator/(const big_int& other) const {
     return *result;
 }
 
-big_int big_int::operator%(const big_int& other) const {
+big_int big_int::operator%(const big_int &other) const {
     auto result = mod(other);
     if (!result) {
         throw std::domain_error(std::string(errors::to_string(result.error())));
@@ -385,31 +370,22 @@ big_int big_int::operator%(const big_int& other) const {
     return *result;
 }
 
-big_int& big_int::operator/=(const big_int& other) {
-    *this = *this / other;  // Uses throwing operator
+big_int &big_int::operator/=(const big_int &other) {
+    *this = *this / other; // Uses throwing operator
     return *this;
 }
 
-big_int& big_int::operator%=(const big_int& other) {
-    *this = *this % other;  // Uses throwing operator
+big_int &big_int::operator%=(const big_int &other) {
+    *this = *this % other; // Uses throwing operator
     return *this;
 }
 
+big_int big_int::operator+(const big_int &other) const { return add(other); }
 
-big_int big_int::operator+(const big_int& other) const {
-    return add(other);
-}
+big_int big_int::operator-(const big_int &other) const { return sub(other); }
 
-big_int big_int::operator-(const big_int& other) const {
-    return sub(other);
-}
+big_int big_int::operator*(const big_int &other) const { return mul(other); }
 
-big_int big_int::operator*(const big_int& other) const {
-    return mul(other);
-}
-
-big_int big_int::operator-() const {
-    return negate();
-}
+big_int big_int::operator-() const { return negate(); }
 
 } // namespace arbys::bignumbers

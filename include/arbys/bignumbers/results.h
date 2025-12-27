@@ -3,10 +3,12 @@
 #include "big_int.h"
 
 namespace arbys::bignumbers {
-    struct DivisionResult {
-        big_int quotient;
-        big_int remainder;
-    };
-}
 
-#endif //BIGNUMBERS_RESULTS_H
+struct DivisionResult {
+    big_int quotient;
+    big_int remainder;
+};
+
+} // namespace arbys::bignumbers
+
+#endif // BIGNUMBERS_RESULTS_H

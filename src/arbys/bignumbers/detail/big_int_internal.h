@@ -66,6 +66,10 @@ namespace arbys::bignumbers::detail {
             return big_int(std::make_unique<big_int_impl>(negative, std::move(limbs)));
         }
 
+        static big_int create_abs(std::vector<limb_t> limbs) {
+            return big_int(std::make_unique<big_int_impl>(false , std::move(limbs)));
+        }
+
         // Direct impl access
         static big_int_impl& impl(big_int& n) noexcept {
             return *n.impl_;

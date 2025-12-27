@@ -15,34 +15,31 @@
 namespace arbys::bignumbers {
 
 namespace detail {
-    struct big_int_impl;
-    struct big_int_access;
-}
+struct big_int_impl;
+struct big_int_access;
+} // namespace detail
 
 class big_int {
-public:
+  public:
     // Constructors and factory methods
     big_int();
 
     // Implicit conversion from integral types
     // This allows: BigInt bn = 100000;
-    template<std::integral T>
-    big_int(T value) : big_int(from_integer(value)) {}
+    template <std::integral T> big_int(T value) : big_int(from_integer(value)) {}
 
     // Copy and move constructors
-    big_int(const big_int& other);
-    big_int(big_int&& other) noexcept;
+    big_int(const big_int &other);
+    big_int(big_int &&other) noexcept;
 
     ~big_int();
 
     // Copy and move assignment
-    big_int& operator=(const big_int& other);
-    big_int& operator=(big_int&& other) noexcept;
+    big_int &operator=(const big_int &other);
+    big_int &operator=(big_int &&other) noexcept;
 
     // Assignment from integral types
-    // This allows: bn = 10221;
-    template<std::integral T>
-    big_int& operator=(T value) {
+    template <std::integral T> big_int &operator=(T value) {
         *this = from_integer(value);
         return *this;
     }
@@ -50,10 +47,13 @@ public:
     // Factory methods for parsing
     [[nodiscard]] static std::expected<big_int, errors::ParseError> from_string(std::string_view input);
     [[nodiscard]] static std::expected<big_int, errors::ParseError> from_string(std::string_view input, char separator);
-    [[nodiscard]] static std::expected<big_int, errors::ParseError> from_string(std::string_view input, std::string_view separator);
+    [[nodiscard]] static std::expected<big_int, errors::ParseError> from_string(
+      std::string_view input,
+      std::string_view separator
+    );
 
     // Factory method for integers
-    template<std::integral T> [[nodiscard]] static big_int from_integer(T value);
+    template <std::integral T> [[nodiscard]] static big_int from_integer(T value);
 
     // Query methods
     [[nodiscard]] size_t      length() const noexcept;
@@ -62,31 +62,33 @@ public:
     [[nodiscard]] std::string to_string() const;
 
     // Arithmetic operations
-    [[nodiscard]] big_int                                                            add(const big_int& other) const;
-    [[nodiscard]] big_int                                                            sub(const big_int& other) const;
-    [[nodiscard]] big_int                                                            mul(const big_int& other) const;
-    [[nodiscard]] std::expected<big_int, errors::ArithmeticError>                    div(const big_int& other) const noexcept;
-    [[nodiscard]] std::expected<big_int, errors::ArithmeticError>                    mod(const big_int& other) const noexcept;
-    [[nodiscard]] std::expected<std::pair<big_int, big_int>, errors::ArithmeticError> div_mod(const big_int& other) const noexcept;
+    [[nodiscard]] big_int                                         add(const big_int &other) const noexcept;
+    [[nodiscard]] big_int                                         sub(const big_int &other) const noexcept;
+    [[nodiscard]] big_int                                         mul(const big_int &other) const noexcept;
+    [[nodiscard]] std::expected<big_int, errors::ArithmeticError> div(const big_int &other) const noexcept;
+    [[nodiscard]] std::expected<big_int, errors::ArithmeticError> mod(const big_int &other) const noexcept;
+    [[nodiscard]] std::expected<std::pair<big_int, big_int>, errors::ArithmeticError> div_mod(
+      const big_int &other
+    ) const noexcept;
 
     [[nodiscard]] big_int abs() const;
     [[nodiscard]] big_int negate() const;
 
     // Operators
-    [[nodiscard]] big_int operator+(const big_int& other) const;
-    [[nodiscard]] big_int operator-(const big_int& other) const;
+    [[nodiscard]] big_int operator+(const big_int &other) const;
+    [[nodiscard]] big_int operator-(const big_int &other) const;
     [[nodiscard]] big_int operator-() const; // unary minus
-    [[nodiscard]] big_int operator*(const big_int& other) const;
-    [[nodiscard]] big_int operator/(const big_int& other) const;
-    [[nodiscard]] big_int operator%(const big_int& other) const;
-    big_int&              operator/=(const big_int& other);
-    big_int&              operator%=(const big_int& other);
+    [[nodiscard]] big_int operator*(const big_int &other) const;
+    [[nodiscard]] big_int operator/(const big_int &other) const;
+    [[nodiscard]] big_int operator%(const big_int &other) const;
+    big_int              &operator/=(const big_int &other);
+    big_int              &operator%=(const big_int &other);
 
     // Comparison
-    [[nodiscard]] std::strong_ordering operator<=>(const big_int& other) const;
-    [[nodiscard]] bool                 operator==(const big_int& other) const;
+    [[nodiscard]] std::strong_ordering operator<=>(const big_int &other) const;
+    [[nodiscard]] bool                 operator==(const big_int &other) const;
 
-private:
+  private:
     std::unique_ptr<detail::big_int_impl> impl_;
 
     // Private constructor for internal use
