@@ -2,12 +2,30 @@
 #define BIGNUMBERS_HELPERS_H
 
 #include <string>
+#include <gtest/gtest.h>
+
+#define EXPECT_BI_EQ(a, b) \
+EXPECT_PRED_FORMAT2(::arbys::bignumbers::tests::helpers::big_int_eq, a, b)
 
 namespace arbys::bignumbers {
     class big_int;
 }
 
 namespace arbys::bignumbers::tests::helpers {
+    ::testing::AssertionResult big_int_eq(
+        const char *expr1,
+        const char *expr2,
+        const big_int &bn1,
+        const big_int &bn2
+    );
+
+    ::testing::AssertionResult big_int_eq(
+        const char *expr1,
+        const char *expr2,
+        const big_int &bn,
+        const std::string &str
+    );
+
     std::string big_int_string_div(const std::string &a, const std::string &b);
     void expect_compare_eq(const big_int& a, const big_int& b, std::strong_ordering expected);
     std::string make_increasing(size_t len);

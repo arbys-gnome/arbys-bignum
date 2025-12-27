@@ -25,16 +25,17 @@ FetchContent_MakeAvailable(googletest)
 # ============================================================================
 
 set(BIGINT_TEST_SOURCES
-    bigint/add_test.cpp
-    bigint/sub_test.cpp
-    bigint/mul_test.cpp
-    bigint/div_test.cpp
-    bigint/cmp_test.cpp
-    bigint/from_string_test.cpp
+        bigint/test_add.cpp
+        bigint/test_sub.cpp
+        bigint/test_mul.cpp
+        bigint/test_div.cpp
+        bigint/test_cmp.cpp
+        bigint/test_from_string.cpp
 )
 
 set(TEST_HELPER_SOURCES
     helpers/helpers.cpp
+        bigint/test_from_integer.cpp
 )
 
 add_executable(BigNumbersTests

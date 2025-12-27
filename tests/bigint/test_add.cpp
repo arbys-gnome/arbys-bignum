@@ -8,43 +8,43 @@ namespace arbys::bignumbers::tests {
         const big_int a = 123;
         const big_int b = 321;
         const big_int r = a + b;
-        helpers::expect_eq(r, "444");
+        EXPECT_BI_EQ(r, "444");
     }
 
     TEST(BigIntAdd, SimpleCarry) {
         const big_int a = 19;
         const big_int b = 34;
         const big_int r = a + b;
-        helpers::expect_eq(r, "53");
+        EXPECT_BI_EQ(r, "53");
     }
 
     TEST(BigIntAdd, CarryAcrossMultipleDigits) {
         const big_int a = 999;
         const big_int b = 1;
         const big_int r = a + b;
-        helpers::expect_eq(r, "1000");
+        EXPECT_BI_EQ(r, "1000");
     }
 
     TEST(BigIntAdd, DifferentLengthsNoCarry) {
         const big_int a = 5000;
         const big_int b = 20;
         const big_int r = a + b;
-        helpers::expect_eq(r, "5020");
+        EXPECT_BI_EQ(r, "5020");
     }
 
     TEST(BigIntAdd, DifferentLengthsWithCarry) {
         const big_int a = 1090;
         const big_int b = 20;
         const big_int r = a + b;
-        helpers::expect_eq(r, "1110");
+        EXPECT_BI_EQ(r, "1110");
     }
 
     TEST(BigIntAdd, AddingZero) {
         const big_int a = 123456;
         const big_int zero = 0;
 
-        helpers::expect_eq(a + zero, "123456");
-        helpers::expect_eq(zero + a, "123456");
+        EXPECT_BI_EQ(a + zero, "123456");
+        EXPECT_BI_EQ(zero + a, "123456");
     }
 
     TEST(BigIntAdd, LargeNumbers) {
@@ -52,7 +52,7 @@ namespace arbys::bignumbers::tests {
         const big_int b = big_int::from_string("987654321098765432109876543210").value();
         const big_int r = a + b;
 
-        helpers::expect_eq(r, "1111111110111111111011111111100");
+        EXPECT_BI_EQ(r, "1111111110111111111011111111100");
     }
 
     TEST(BigIntAdd, Commutativity) {
@@ -62,8 +62,8 @@ namespace arbys::bignumbers::tests {
         const big_int r1 = a + b;
         const big_int r2 = b + a;
 
-        helpers::expect_eq(r1, "1111111110");
-        helpers::expect_eq(r2, "1111111110");
+        EXPECT_BI_EQ(r1, "1111111110");
+        EXPECT_BI_EQ(r2, "1111111110");
     }
 
     TEST(BigIntAdd, ManyCarries) {
@@ -71,7 +71,7 @@ namespace arbys::bignumbers::tests {
         const big_int b = big_int::from_string("55555555555555555555").value();
         const big_int r = a + b;
 
-        helpers::expect_eq(r, "111111111111111111110");
+        EXPECT_BI_EQ(r, "111111111111111111110");
     }
 
     TEST(BigIntAdd, RandomizedSmall) {
@@ -84,7 +84,7 @@ namespace arbys::bignumbers::tests {
             big_int b = y;
             big_int r = a + b;
 
-            helpers::expect_eq(r, std::to_string(x + y));
+            EXPECT_BI_EQ(r, std::to_string(x + y));
         }
     }
 
@@ -105,7 +105,7 @@ namespace arbys::bignumbers::tests {
             const std::string expected = helpers::big_int_string_add(s1, s2);
 
             big_int result = a + b;
-            helpers::expect_eq(result, expected);
+            EXPECT_BI_EQ(result, expected);
         }
     }
 } // namespace arbys::bignumbers::tests::add

@@ -10,13 +10,13 @@ TEST(BigIntFromString, NoSeparatorDigitsOnly) {
     {
         const auto res = big_int::from_string("000" + s);
         helpers::expect_ok(res);
-        helpers::expect_eq(res.value(), s);
+        EXPECT_BI_EQ(res.value(), s);
     }
 
     {
         const auto res = big_int::from_string("  \t " + s + "  \n ");
         helpers::expect_ok(res);
-        helpers::expect_eq(res.value(), s);
+        EXPECT_BI_EQ(res.value(), s);
     }
 }
 
@@ -29,13 +29,13 @@ TEST(BigIntFromString, NoSeparatorRejectsNonDigits) {
 TEST(BigIntFromString, CharSeparator) {
     const auto res = big_int::from_string("0001,02,003,004", ',');
     helpers::expect_ok(res);
-    helpers::expect_eq(res.value(), "102003004");
+    EXPECT_BI_EQ(res.value(), "102003004");
 }
 
 TEST(BigIntFromString, SeparatorPreservesInternalZeros) {
     const auto res = big_int::from_string("0001;0020;0030", ';');
     helpers::expect_ok(res);
-    helpers::expect_eq(res.value(), "100200030");
+    EXPECT_BI_EQ(res.value(), "100200030");
 }
 
 TEST(BigIntFromString, SeparatorRejectsInvalidTokens) {
@@ -47,13 +47,13 @@ TEST(BigIntFromString, SeparatorRejectsInvalidTokens) {
 TEST(BigIntFromString, LeadingZerosOnlyTokensIgnored) {
     const auto res = big_int::from_string("0000,0001,0020,0003", ',');
     helpers::expect_ok(res);
-    helpers::expect_eq(res.value(), "100200003");
+    EXPECT_BI_EQ(res.value(), "100200003");
 }
 
 TEST(BigIntFromString, StringSeparator) {
     const auto res = big_int::from_string("12__34__056", "__");
     helpers::expect_ok(res);
-    helpers::expect_eq(res.value(), "1234056");
+    EXPECT_BI_EQ(res.value(), "1234056");
 }
 
 TEST(BigIntFromString, LargeNumberWithSpaces) {
@@ -65,21 +65,21 @@ TEST(BigIntFromString, LargeNumberWithSpaces) {
 
     const auto res = big_int::from_string(spaced, ' ');
     helpers::expect_ok(res);
-    helpers::expect_eq(res.value(), s);
+    EXPECT_BI_EQ(res.value(), s);
 }
 
 TEST(BigIntFromString, ZeroValueAlwaysPositive) {
     {
         const auto res = big_int::from_string("0000");
         helpers::expect_ok(res);
-        helpers::expect_eq(res.value(), "0");
+        EXPECT_BI_EQ(res.value(), "0");
         EXPECT_FALSE(res->is_negative());
     }
 
     {
         const auto res = big_int::from_string("-0000");
         helpers::expect_ok(res);
-        helpers::expect_eq(res.value(), "0");
+        EXPECT_BI_EQ(res.value(), "0");
         EXPECT_FALSE(res->is_negative());
     }
 }

@@ -29,17 +29,64 @@ namespace arbys::bignumbers::tests::helpers {
         return s;
     }
 
-    void expect_eq(const big_int &bn, std::string s) {
-        ASSERT_EQ(bn.to_string(), s);
+    bool is_eq(const big_int &bn, std::string s) {
+        return bn.to_string() == s;
     }
 
-    void expect_eq(const big_int &bn1, const big_int &bn2) {
-        EXPECT_EQ(bn1.is_negative(), bn2.is_negative());
-        ASSERT_EQ(detail::big_int_access::length(bn1), detail::big_int_access::length(bn2));
-        for (const auto &[l1, l2]
-            : std::views::zip(detail::big_int_access::limbs(bn1), detail::big_int_access::limbs(bn2))) {
-            EXPECT_EQ(l1, l2);
+    ::testing::AssertionResult big_int_eq(
+        const char* expr1,
+        const char* expr2,
+        const big_int &bn1,
+        const big_int &bn2)
+    {
+        if (bn1.is_negative() != bn2.is_negative()) {
+            return ::testing::AssertionFailure()
+                << expr1 << " and " << expr2
+                << " differ in sign";
         }
+
+        const auto len1 = detail::big_int_access::length(bn1);
+        const auto len2 = detail::big_int_access::length(bn2);
+
+        if (len1 != len2) {
+            return ::testing::AssertionFailure()
+                << expr1 << " has length " << len1
+                << ", " << expr2 << " has length " << len2;
+        }
+
+        size_t i = 0;
+        for (const auto& [l1, l2]
+             : std::views::zip(
+                   detail::big_int_access::limbs(bn1),
+                   detail::big_int_access::limbs(bn2)
+               )
+            ) {
+            if (l1 != l2) {
+                return ::testing::AssertionFailure()
+                    << "Limb mismatch at index " << i << ":\n"
+                    << "  " << expr1 << "[" << i << "] = " << l1 << ",\n"
+                    << "  " << expr2 << "[" << i << "] = " << l2;
+            }
+            ++i;
+        }
+
+        return ::testing::AssertionSuccess();
+    }
+
+    ::testing::AssertionResult big_int_eq(
+        const char* expr1,
+        const char* expr2,
+        const big_int& bn,
+        const std::string& str)
+    {
+        const auto actual = bn.to_string();
+        if (actual != str) {
+            return ::testing::AssertionFailure()
+                << expr1 << ".to_string() != " << expr2 << "\n"
+                << "  Actual:   \"" << actual << "\"\n"
+                << "  Expected: \"" << str << "\"";
+        }
+        return ::testing::AssertionSuccess();
     }
 
     std::string big_int_string_add(const std::string& a, const std::string& b) {

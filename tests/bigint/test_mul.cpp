@@ -1,6 +1,8 @@
-#include <gtest/gtest.h>
 #include "arbys/bignumbers/big_int.h"
+
 #include "../helpers/helpers.h"
+
+#include <gtest/gtest.h>
 
 
 namespace arbys::bignumbers::tests {
@@ -16,7 +18,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("0").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "0");
+        EXPECT_BI_EQ(result, "0");
     }
 
     TEST_F(BigIntMulTest, ZeroMultiplyByNumber) {
@@ -24,7 +26,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("98765").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "0");
+        EXPECT_BI_EQ(result, "0");
     }
 
     TEST_F(BigIntMulTest, ZeroMultiplyByZero) {
@@ -32,7 +34,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("0").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "0");
+        EXPECT_BI_EQ(result, "0");
     }
 
     TEST_F(BigIntMulTest, MultiplyByOne) {
@@ -40,7 +42,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("1").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "12345");
+        EXPECT_BI_EQ(result, "12345");
     }
 
     TEST_F(BigIntMulTest, OneMultiplyByNumber) {
@@ -48,7 +50,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("98765").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "98765");
+        EXPECT_BI_EQ(result, "98765");
     }
 
     TEST_F(BigIntMulTest, SmallPositiveNumbers) {
@@ -56,7 +58,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("456").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "56088");
+        EXPECT_BI_EQ(result, "56088");
     }
 
     TEST_F(BigIntMulTest, TwoDigitMultiplication) {
@@ -64,7 +66,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("99").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "9801");
+        EXPECT_BI_EQ(result, "9801");
     }
 
     TEST_F(BigIntMulTest, SingleDigitMultiplication) {
@@ -72,7 +74,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("8").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "56");
+        EXPECT_BI_EQ(result, "56");
     }
 
     TEST_F(BigIntMulTest, PositiveTimesNegative) {
@@ -80,7 +82,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("-456").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "-56088");
+        EXPECT_BI_EQ(result, "-56088");
     }
 
     TEST_F(BigIntMulTest, NegativeTimesPositive) {
@@ -88,7 +90,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("456").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "-56088");
+        EXPECT_BI_EQ(result, "-56088");
     }
 
     TEST_F(BigIntMulTest, NegativeTimesNegative) {
@@ -96,7 +98,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("-456").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "56088");
+        EXPECT_BI_EQ(result, "56088");
     }
 
     TEST_F(BigIntMulTest, NegativeByZero) {
@@ -104,7 +106,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("0").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "0");
+        EXPECT_BI_EQ(result, "0");
     }
 
     TEST_F(BigIntMulTest, NegativeByOne) {
@@ -112,7 +114,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("1").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "-12345");
+        EXPECT_BI_EQ(result, "-12345");
     }
 
     TEST_F(BigIntMulTest, NegativeByNegativeOne) {
@@ -120,7 +122,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("-1").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "12345");
+        EXPECT_BI_EQ(result, "12345");
     }
 
     TEST_F(BigIntMulTest, MediumSizeNumbers) {
@@ -128,7 +130,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("987654321").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "121932631112635269");
+        EXPECT_BI_EQ(result, "121932631112635269");
     }
 
     TEST_F(BigIntMulTest, PowersOfTen) {
@@ -136,7 +138,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("1000").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "1000000");
+        EXPECT_BI_EQ(result, "1000000");
     }
 
     TEST_F(BigIntMulTest, PowersOfTenLarge) {
@@ -144,7 +146,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("1000000").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "1000000000000");
+        EXPECT_BI_EQ(result, "1000000000000");
     }
 
     TEST_F(BigIntMulTest, LargeNumbers) {
@@ -152,7 +154,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("98765432109876543210").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "1219326311370217952237463801111263526900");
+        EXPECT_BI_EQ(result, "1219326311370217952237463801111263526900");
     }
 
     TEST_F(BigIntMulTest, VeryLargeNumbers) {
@@ -160,7 +162,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("987654321098765432109876543210").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result,
+        EXPECT_BI_EQ(result,
                   "121932631137021795226185032733622923332237463801111263526900");
     }
 
@@ -179,7 +181,7 @@ namespace arbys::bignumbers::tests {
         expected += std::string(99, '0');
         expected += "1";
 
-        helpers::expect_eq(result, expected);
+        EXPECT_BI_EQ(result, expected);
     }
 
     TEST_F(BigIntMulTest, DifferentSizesSmallByLarge) {
@@ -187,7 +189,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("123456789012345678901234567890").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "617283945061728394506172839450");
+        EXPECT_BI_EQ(result, "617283945061728394506172839450");
     }
 
     TEST_F(BigIntMulTest, DifferentSizesLargeBySmall) {
@@ -195,7 +197,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("5").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "617283945061728394506172839450");
+        EXPECT_BI_EQ(result, "617283945061728394506172839450");
     }
 
     TEST_F(BigIntMulTest, DifferentSizesMedium) {
@@ -203,21 +205,21 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("7890123456789").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "974083081481342784");
+        EXPECT_BI_EQ(result, "974083081481342784");
     }
 
     TEST_F(BigIntMulTest, SameNumberMultipliedByItself) {
         const auto a = big_int::from_string("123456789").value();
         const auto result = a * a;
 
-        helpers::expect_eq(result, "15241578750190521");
+        EXPECT_BI_EQ(result, "15241578750190521");
     }
 
     TEST_F(BigIntMulTest, NegativeSameNumber) {
         const auto a = big_int::from_string("-999").value();
         const auto result = a * a;
 
-        helpers::expect_eq(result, "998001");
+        EXPECT_BI_EQ(result, "998001");
     }
 
     TEST_F(BigIntMulTest, TrailingZeros) {
@@ -225,7 +227,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("34000").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "408000000");
+        EXPECT_BI_EQ(result, "408000000");
     }
 
     TEST_F(BigIntMulTest, LeadingAndTrailingZeros) {
@@ -233,7 +235,7 @@ namespace arbys::bignumbers::tests {
         const auto b = big_int::from_string("2000").value();
         const auto result = a * b;
 
-        helpers::expect_eq(result, "2000000");
+        EXPECT_BI_EQ(result, "2000000");
     }
 
     TEST_F(BigIntMulTest, CommutativitySmall) {
@@ -243,7 +245,7 @@ namespace arbys::bignumbers::tests {
         const auto result1 = a * b;
         const auto result2 = b * a;
 
-        helpers::expect_eq(result1, result2);
+        EXPECT_BI_EQ(result1, result2);
     }
 
     TEST_F(BigIntMulTest, CommutativityLarge) {
@@ -253,7 +255,7 @@ namespace arbys::bignumbers::tests {
         const auto result1 = a * b;
         const auto result2 = b * a;
 
-        helpers::expect_eq(result1, result2);
+        EXPECT_BI_EQ(result1, result2);
     }
 
     TEST_F(BigIntMulTest, CommutativityWithNegatives) {
@@ -263,7 +265,7 @@ namespace arbys::bignumbers::tests {
         const auto result1 = a * b;
         const auto result2 = b * a;
 
-        helpers::expect_eq(result1, result2);
+        EXPECT_BI_EQ(result1, result2);
     }
 
     TEST_F(BigIntMulTest, Associativity) {
@@ -274,7 +276,7 @@ namespace arbys::bignumbers::tests {
         const auto result1 = (a * b) * c;
         const auto result2 = a * (b * c);
 
-        helpers::expect_eq(result1, result2);
+        EXPECT_BI_EQ(result1, result2);
     }
 
     TEST_F(BigIntMulTest, OperatorOverload) {
@@ -284,7 +286,7 @@ namespace arbys::bignumbers::tests {
         const auto result_method = a.mul(b);
         const auto result_operator = a * b;
 
-        helpers::expect_eq(result_method, result_operator);
+        EXPECT_BI_EQ(result_method, result_operator);
     }
 
     TEST_F(BigIntMulTest, SmallFactorial) {
@@ -295,7 +297,7 @@ namespace arbys::bignumbers::tests {
             result = result * factor;
         }
 
-        helpers::expect_eq(result, "120");
+        EXPECT_BI_EQ(result, "120");
     }
 
     TEST_F(BigIntMulTest, MediumFactorial) {
@@ -306,7 +308,7 @@ namespace arbys::bignumbers::tests {
             result = result * factor;
         }
 
-        helpers::expect_eq(result, "3628800");
+        EXPECT_BI_EQ(result, "3628800");
     }
 
     TEST_F(BigIntMulTest, LargeFactorial) {
@@ -317,7 +319,7 @@ namespace arbys::bignumbers::tests {
             result = result * factor;
         }
 
-        helpers::expect_eq(result, "2432902008176640000");
+        EXPECT_BI_EQ(result, "2432902008176640000");
     }
 
     TEST_F(BigIntMulTest, PowersOfTwo) {
@@ -329,7 +331,7 @@ namespace arbys::bignumbers::tests {
             result = result * two;
         }
 
-        helpers::expect_eq(result, "1024");
+        EXPECT_BI_EQ(result, "1024");
     }
 
     TEST_F(BigIntMulTest, LargePowerOfTwo) {
@@ -341,7 +343,7 @@ namespace arbys::bignumbers::tests {
             result = result * two;
         }
 
-        helpers::expect_eq(result, "1048576");
+        EXPECT_BI_EQ(result, "1048576");
     }
 
 }
