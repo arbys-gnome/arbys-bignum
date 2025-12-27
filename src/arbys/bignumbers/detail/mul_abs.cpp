@@ -36,46 +36,47 @@ namespace arbys::bignumbers::detail {
         return big_int_access::create(big_int_access::is_negative(num),result_digits);
     }
 
-    big_int simple_multiply(const big_int& lhs, const big_int& rhs) {
+    big_int simple_multiply(const big_int &lhs, const big_int &rhs) {
+        // Handle 0 case
         if (lhs.is_zero() || rhs.is_zero()) {
             return big_int_access::create(false, {0});
         }
 
-        const auto& lhs_digits = big_int_access::limbs(lhs);
-        const auto& rhs_digits = big_int_access::limbs(rhs);
+        const auto &lhs_limbs = big_int_access::limbs(lhs);
+        const auto &rhs_limbs = big_int_access::limbs(rhs);
 
-        std::vector<limb_t> result_digits(lhs_digits.size() + rhs_digits.size(), 0);
+        const auto &lhs_len = big_int_access::length(lhs);
+        const auto &rhs_len = big_int_access::length(rhs);
 
-        for (size_t i = 0; i < lhs_digits.size(); ++i) {
-            uint64_t carry = 0;
+        std::vector<limb_t> result_limbs(lhs_len + rhs_len);
 
-            for (size_t j = 0; j < rhs_digits.size(); ++j) {
-                const uint64_t prod = result_digits[i + j] +
-                                      static_cast<uint64_t>(lhs_digits[i]) * rhs_digits[j] +
-                                      carry;
+        for (size_t i = 0; i < lhs_len; ++i) {
+            limb_t carry = 0;
 
-                result_digits[i + j] = static_cast<limb_t>(prod % 10);
-                carry = prod / 10;
+            // multiply i'th limb of lhs_limbs to j'th limb of rhs_limbs
+            for (size_t j = 0; j < rhs_len; ++j) {
+                const dlimb_t prod = result_limbs[i + j] +
+                                     static_cast<uint64_t>(lhs_limbs[i]) * rhs_limbs[j] +
+                                     carry;
+
+                result_limbs[i + j] = static_cast<limb_t>(prod); // lower 32 bits
+                carry = prod >> LIMB_BITS;                       // upper 32 bits
             }
 
-            size_t pos = i + rhs_digits.size();
+            // add the carry
+            size_t pos = i + rhs_len;
             while (carry > 0) {
-                const uint64_t sum = result_digits[pos] + carry;
-                result_digits[pos] = static_cast<limb_t>(sum % 10);
-                carry = sum / 10;
+                const uint64_t sum = result_limbs[pos] + carry;
+                result_limbs[pos] = static_cast<limb_t>(sum); // lower 32 bits
+                carry = sum >> LIMB_BITS;                     // upper 32 bits
                 ++pos;
             }
         }
 
-        while (result_digits.size() > 1 && result_digits.back() == 0) {
-            result_digits.pop_back();
-        }
-
-        return big_int_access::create(false, result_digits);
+        return big_int_access::create(false, result_limbs);
     }
 
     big_int karatsuba_multiply(const big_int& lhs, const big_int& rhs) {
-        // TODO: fix karatsuba
         constexpr size_t karatsuba_threshold = 32;
 
         const size_t lhs_len = big_int_access::length(lhs);
@@ -104,7 +105,7 @@ namespace arbys::bignumbers::detail {
     }
 
     big_int mul_abs(const big_int& lhs, const big_int& rhs) {
-        return simple_multiply(lhs, rhs);
+        return karatsuba_multiply(lhs, rhs);
     }
 
 }

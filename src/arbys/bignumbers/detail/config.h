@@ -3,6 +3,7 @@
 #include <cstdint>
 
 namespace arbys::bignumbers::detail {
+
     using limb_t  = uint32_t;
     using dlimb_t = uint64_t;
     using s_dlimb_t = int64_t;
