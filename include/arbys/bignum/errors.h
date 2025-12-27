@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace arbys::bignumbers::errors {
+namespace arbys::bignum::errors {
 
 /// Errors that can occur during parsing
 enum class ParseError {

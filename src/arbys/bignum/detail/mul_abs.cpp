@@ -1,10 +1,10 @@
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "big_int_internal.h"
 #include "detail.h"
 #include <algorithm>
 #include <ranges>
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 std::pair<big_int, big_int> split_at(const big_int &num, const std::ptrdiff_t mid) {
     const auto &digits = big_int_access::limbs(num);

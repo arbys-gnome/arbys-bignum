@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "../../include/arbys/bignumbers/big_int.h"
+#include "../../include/arbys/bignum/big_int.h"
 #include "../helpers/helpers.h"
 
-namespace arbys::bignumbers::tests {
+namespace arbys::bignum::tests {
 TEST(BigIntCompare, EqualNumbers) {
     helpers::expect_compare_eq(
       big_int::from_string("0").value(), big_int::from_string("0").value(), std::strong_ordering::equal

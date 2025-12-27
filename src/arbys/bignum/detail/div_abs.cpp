@@ -1,4 +1,4 @@
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 
 #include "big_int_internal.h"
 #include "config.h"
@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <expected>
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 /// Compare absolute values for division algorithm
 [[nodiscard]] static std::strong_ordering cmp_abs_range(

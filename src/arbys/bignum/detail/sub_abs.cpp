@@ -1,11 +1,11 @@
 #include <cassert>
 #include <ranges>
 
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "big_int_internal.h"
 #include "detail.h"
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 /// Subtracts the absolute values: |lhs| - |rhs|
 /// Precondition: |lhs| >= |rhs| (undefined behavior otherwise)

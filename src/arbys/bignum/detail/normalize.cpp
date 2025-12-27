@@ -1,9 +1,9 @@
 #include <vector>
 
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "big_int_internal.h"
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 /// Removes leading zero limbs (canonical form requirement)
 void trim_leading_zeros(std::vector<limb_t> &limbs) {

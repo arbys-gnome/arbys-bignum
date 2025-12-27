@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "../../include/arbys/bignumbers/big_int.h"
+#include "../../include/arbys/bignum/big_int.h"
 #include "../helpers/helpers.h"
 
-namespace arbys::bignumbers::tests {
+namespace arbys::bignum::tests {
 
 TEST(BigIntFromString, NoSeparatorDigitsOnly) {
     const std::string s = helpers::make_increasing(10);

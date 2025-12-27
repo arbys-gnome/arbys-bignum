@@ -1,9 +1,9 @@
 #ifndef SRC_DETAILS_DETAILS_HPP_
 #define SRC_DETAILS_DETAILS_HPP_
 
-#include "arbys/bignumbers/big_int.h"
-#include "arbys/bignumbers/errors.h"
-#include "arbys/bignumbers/results.h"
+#include "arbys/bignum/big_int.h"
+#include "arbys/bignum/errors.h"
+#include "arbys/bignum/results.h"
 #include "config.h"
 
 #include <expected>
@@ -11,7 +11,7 @@
 #include <string_view>
 #include <vector>
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
     constexpr bool is_space(unsigned char c) noexcept {
         return std::isspace(c);
     }

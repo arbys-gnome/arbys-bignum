@@ -1,10 +1,6 @@
-if(NOT BIGNUMBERS_BUILD_TESTS)
+if(NOT ARBYS_BIGNUM_BUILD_TESTS)
     return()
 endif()
-
-# ============================================================================
-# Google Test Setup
-# ============================================================================
 
 include(FetchContent)
 
@@ -20,57 +16,45 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(googletest)
 
-# ============================================================================
-# Test executable
-# ============================================================================
-
-set(BIGINT_TEST_SOURCES
-        bigint/test_add.cpp
-        bigint/test_sub.cpp
-        bigint/test_mul.cpp
-        bigint/test_div.cpp
-        bigint/test_cmp.cpp
-        bigint/test_from_string.cpp
+set(ARBYS_BIGNUM_TEST_SOURCES
+        big_int/test_add.cpp
+        big_int/test_sub.cpp
+        big_int/test_mul.cpp
+        big_int/test_div.cpp
+        big_int/test_cmp.cpp
+        big_int/test_from_string.cpp
 )
 
-set(TEST_HELPER_SOURCES
+set(ARBYS_BIGNUM_TEST_HELPER_SOURCES
     helpers/helpers.cpp
-        bigint/test_from_integer.cpp
+        big_int/test_from_integer.cpp
 )
 
-add_executable(BigNumbersTests
-    ${BIGINT_TEST_SOURCES}
-    ${TEST_HELPER_SOURCES}
+add_executable(arbys-bignum-tests
+    ${ARBYS_BIGNUM_TEST_SOURCES}
+    ${ARBYS_BIGNUM_TEST_HELPER_SOURCES}
 )
 
-# ============================================================================
-# Target configuration
-# ============================================================================
-
-target_link_libraries(BigNumbersTests
+target_link_libraries(arbys-bignum-tests
     PRIVATE
-        BigNumbers::BigNumbers
+        arbys::bignum
         GTest::gtest_main
 )
 
 # Add sanitizers in debug mode for better error detection
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(BigNumbersTests PRIVATE
+        target_compile_options(arbys-bignum-tests PRIVATE
             -fsanitize=address,undefined
         )
-        target_link_options(BigNumbersTests PRIVATE
+        target_link_options(arbys-bignum-tests PRIVATE
             -fsanitize=address,undefined
         )
     endif()
 endif()
 
-# ============================================================================
-# Test discovery
-# ============================================================================
-
 include(GoogleTest)
-gtest_discover_tests(BigNumbersTests
+gtest_discover_tests(arbys-bignum-tests
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     PROPERTIES
         LABELS "unit"

@@ -1,9 +1,9 @@
 #include <compare>
 
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "big_int_internal.h"
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 std::strong_ordering cmp_abs(const big_int &lhs, const big_int &rhs) {
     if (big_int_access::length(lhs) != big_int_access::length(rhs)) {

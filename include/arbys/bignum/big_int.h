@@ -12,7 +12,7 @@
 
 #include "errors.h"
 
-namespace arbys::bignumbers {
+namespace arbys::bignum {
 
 namespace detail {
 struct big_int_impl;

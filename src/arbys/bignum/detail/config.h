@@ -2,7 +2,7 @@
 #define BIGNUMBERS_CONFIG_H
 #include <cstdint>
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 using limb_t                        = uint32_t;
 using dlimb_t                       = uint64_t;

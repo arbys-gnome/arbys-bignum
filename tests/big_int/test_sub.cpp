@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "../../include/arbys/bignumbers/big_int.h"
+#include "../../include/arbys/bignum/big_int.h"
 #include "../helpers/helpers.h"
 
-namespace arbys::bignumbers::tests {
+namespace arbys::bignum::tests {
 
 TEST(BigIntSubTest, SimpleNoBorrow) {
     const big_int a = 123;

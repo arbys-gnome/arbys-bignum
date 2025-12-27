@@ -1,12 +1,12 @@
 #ifndef BIGNUMBERS_BIGINT_INTERNAL_H
 #define BIGNUMBERS_BIGINT_INTERNAL_H
 
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "config.h"
 
 #include <vector>
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
     struct big_int_impl {
         bool is_negative_ = false;
         std::vector<limb_t> limbs_;  // stored in reverse (LSB first)

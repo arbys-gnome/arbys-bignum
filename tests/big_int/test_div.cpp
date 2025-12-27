@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "../../include/arbys/bignumbers/big_int.h"
+#include "../../include/arbys/bignum/big_int.h"
 #include "../helpers/helpers.h"
 
-namespace arbys::bignumbers::tests {
+namespace arbys::bignum::tests {
 //     TEST(BigIntDivWithLongLongTest, SimpleLongLongDivision) {
 //         const BigInt a = BigInt::from_string("1000").value();
 //         const long long d = 8;

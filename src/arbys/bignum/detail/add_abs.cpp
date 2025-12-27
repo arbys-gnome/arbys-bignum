@@ -1,10 +1,10 @@
 #include <ranges>
 
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "big_int_internal.h"
 #include "detail.h"
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 big_int add_abs(const big_int &lhs, const big_int &rhs) {
     const big_int *bigger  = (big_int_access::length(lhs) >= big_int_access::length(rhs)) ? &lhs : &rhs;

@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(BigNumbers
-    VERSION 1.0.0
-    DESCRIPTION "Arbitrary precision arithmetic library"
+project(arbys-bignum
+    VERSION 0.1.0
+    DESCRIPTION "Arbitrary-Precision Arithmetic Library"
     LANGUAGES CXX
 )
 
@@ -12,51 +12,51 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Only build tests if this is the main project
 if(PROJECT_IS_TOP_LEVEL)
-    option(BIGNUMBERS_BUILD_TESTS "Build BigNumbers tests" ON)
+    option(ARBYS_BIGNUM_BUILD_TESTS "Build arbys-bignum tests" ON)
 else()
-    option(BIGNUMBERS_BUILD_TESTS "Build BigNumbers tests" OFF)
+    option(ARBYS_BIGNUM_BUILD_TESTS "Build arbys-bignum tests" OFF)
 endif()
 
-set(BIGINT_SOURCES
-        src/arbys/bignumbers/bigint/big_int.cpp
+set(ARBYS_BIGNUM_SOURCES
+        src/arbys/bignum/big_int/big_int.cpp
 )
 
-set(DETAIL_SOURCES
-        src/arbys/bignumbers/detail/parse_limbs.cpp
-        src/arbys/bignumbers/detail/normalize.cpp
-        src/arbys/bignumbers/detail/cmp_abs.cpp
-        src/arbys/bignumbers/detail/add_abs.cpp
-        src/arbys/bignumbers/detail/sub_abs.cpp
-        src/arbys/bignumbers/detail/mul_abs.cpp
-        src/arbys/bignumbers/detail/config.h
-        src/arbys/bignumbers/detail/div_abs.cpp
-        src/arbys/bignumbers/detail/big_int_internal.h
-        include/arbys/bignumbers/results.h
+set(ARBYS_BIGNUM_DETAIL_SOURCES
+        src/arbys/bignum/detail/parse_limbs.cpp
+        src/arbys/bignum/detail/normalize.cpp
+        src/arbys/bignum/detail/cmp_abs.cpp
+        src/arbys/bignum/detail/add_abs.cpp
+        src/arbys/bignum/detail/sub_abs.cpp
+        src/arbys/bignum/detail/mul_abs.cpp
+        src/arbys/bignum/detail/div_abs.cpp
 )
 
-add_library(BigNumbers
-    ${BIGINT_SOURCES}
-    ${DETAIL_SOURCES}
+add_library(arbys-bignum
+    ${ARBYS_BIGNUM_SOURCES}
+    ${ARBYS_BIGNUM_DETAIL_SOURCES}
 )
 
-# Add an alias for use when included as a subdirectory
-add_library(BigNumbers::BigNumbers ALIAS BigNumbers)
+add_library(arbys::bignum ALIAS arbys-bignum)
 
-target_include_directories(BigNumbers
+target_include_directories(arbys-bignum
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
 
-target_compile_features(BigNumbers PUBLIC cxx_std_26)
+target_compile_features(arbys-bignum PUBLIC cxx_std_26)
+
+set_target_properties(arbys-bignum PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+)
 
 # Add compiler warnings
-target_compile_options(BigNumbers PRIVATE
+target_compile_options(arbys-bignum PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:/W4>
     $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra -Wpedantic>
 )
 
-if(BIGNUMBERS_BUILD_TESTS)
+if(ARBYS_BIGNUM_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
@@ -64,15 +64,15 @@ endif()
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/arbys-bignum-config-version.cmake"
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY SameMajorVersion
 )
 
 include(GNUInstallDirs)
 
-install(TARGETS BigNumbers
-    EXPORT BigNumbersTargets
+install(TARGETS arbys-bignum
+    EXPORT arbys-bignum-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -83,20 +83,20 @@ install(DIRECTORY include/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-install(EXPORT BigNumbersTargets
-    FILE BigNumbersTargets.cmake
-    NAMESPACE BigNumbers::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BigNumbers
+install(EXPORT arbys-bignum-targets
+    FILE arbys-bignum-targets.cmake
+    NAMESPACE arbys::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/arbys-bignum
 )
 
 configure_package_config_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/BigNumbersConfig.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfig.cmake"
-        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BigNumbers
+        "${CMAKE_CURRENT_SOURCE_DIR}/arbys-bignum-config.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/arbys-bignum-config.cmake"
+        INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/arbys-bignum
 )
 
 install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/BigNumbersConfigVersion.cmake"
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/BigNumbers
+        "${CMAKE_CURRENT_BINARY_DIR}/arbys-bignum-config.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/arbys-bignum-config-version.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/arbys-bignum
 )

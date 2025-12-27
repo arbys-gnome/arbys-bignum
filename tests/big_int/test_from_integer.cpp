@@ -1,4 +1,4 @@
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 
 #include "../helpers/helpers.h"
 
@@ -6,7 +6,7 @@
 
 #include <limits>
 
-namespace arbys::bignumbers::tests {
+namespace arbys::bignum::tests {
 
 TEST(FromIntegerTest, FromPositiveInt) {
     constexpr long long nr = std::numeric_limits<int>::max();

@@ -5,8 +5,8 @@
 #include <string_view>
 #include <vector>
 
-#include "arbys/bignumbers/big_int.h"
-#include "arbys/bignumbers/errors.h"
+#include "arbys/bignum/big_int.h"
+#include "arbys/bignum/errors.h"
 #include "big_int_internal.h"
 
 #include <algorithm>
@@ -14,7 +14,7 @@
 #include <expected>
 #include <string_view>
 
-namespace arbys::bignumbers::detail {
+namespace arbys::bignum::detail {
 
 /// Convert decimal string to base 2^32 representation
 /// Algorithm: Repeatedly multiply accumulator by 10 and add next digit

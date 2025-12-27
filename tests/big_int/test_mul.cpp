@@ -1,10 +1,10 @@
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 
 #include "../helpers/helpers.h"
 
 #include <gtest/gtest.h>
 
-namespace arbys::bignumbers::tests {
+namespace arbys::bignum::tests {
 
 class BigIntMulTest : public ::testing::Test {
   protected:

@@ -2,7 +2,7 @@
 #define BIGNUMBERS_RESULTS_H
 #include "big_int.h"
 
-namespace arbys::bignumbers {
+namespace arbys::bignum {
 
 struct DivisionResult {
     big_int quotient;

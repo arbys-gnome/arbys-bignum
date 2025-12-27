@@ -5,13 +5,13 @@
 #include <gtest/gtest.h>
 
 #define EXPECT_BI_EQ(a, b) \
-EXPECT_PRED_FORMAT2(::arbys::bignumbers::tests::helpers::big_int_eq, a, b)
+EXPECT_PRED_FORMAT2(::arbys::bignum::tests::helpers::big_int_eq, a, b)
 
-namespace arbys::bignumbers {
+namespace arbys::bignum {
     class big_int;
 }
 
-namespace arbys::bignumbers::tests::helpers {
+namespace arbys::bignum::tests::helpers {
     ::testing::AssertionResult big_int_eq(
         const char *expr1,
         const char *expr2,

@@ -1,4 +1,4 @@
-#include "arbys/bignumbers/big_int.h"
+#include "arbys/bignum/big_int.h"
 #include "../detail/big_int_internal.h"
 #include "../detail/config.h"
 #include "../detail/detail.h"
@@ -9,7 +9,7 @@
 #include <ranges>
 #include <stdexcept>
 
-namespace arbys::bignumbers {
+namespace arbys::bignum {
 
 big_int::big_int() : impl_(std::make_unique<detail::big_int_impl>()) {}
 

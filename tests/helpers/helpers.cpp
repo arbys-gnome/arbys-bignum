@@ -4,10 +4,10 @@
 #include <print>
 #include <ranges>
 
-#include "../../include/arbys/bignumbers/big_int.h"
-#include "../../src/arbys/bignumbers/detail/big_int_internal.h"
+#include "../../include/arbys/bignum/big_int.h"
+#include "../../src/arbys/bignum/detail/big_int_internal.h"
 
-namespace arbys::bignumbers::tests::helpers {
+namespace arbys::bignum::tests::helpers {
     std::string big_int_string_div(const std::string &a, const std::string &b) {
         const long long lhs  = std::stoll(a);
         const long long rhs  = std::stoll(b);
