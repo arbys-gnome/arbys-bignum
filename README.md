@@ -10,7 +10,7 @@ A _modern_ C++ library for arbitrary-precision integer arithmetic, _built from s
     - comparison
 
 ## Requirements
-- C++26 compatible compiler
+- C++23 compatible compiler
 - CMake >= 3.28
 
 ## Building & Installing

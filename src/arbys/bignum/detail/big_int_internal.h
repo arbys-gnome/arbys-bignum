@@ -1,5 +1,4 @@
-#ifndef BIGNUMBERS_BIGINT_INTERNAL_H
-#define BIGNUMBERS_BIGINT_INTERNAL_H
+#pragma once
 
 #include "arbys/bignum/big_int.h"
 #include "config.h"
@@ -79,6 +78,4 @@ namespace arbys::bignum::detail {
             return *n.impl_;
         }
     };
-}
-
-#endif //BIGNUMBERS_BIGINT_INTERNAL_H
+} // arbys::bignum::detail

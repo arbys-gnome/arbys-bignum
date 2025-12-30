@@ -1,5 +1,4 @@
-#ifndef BIGNUMBERS_ERRORS_H
-#define BIGNUMBERS_ERRORS_H
+#pragma once
 
 #include <stdexcept>
 #include <string>
@@ -63,5 +62,4 @@ struct divide_by_zero_error : public std::runtime_error {
     divide_by_zero_error() : std::runtime_error("Division by zero") {}
 };
 
-} // namespace arbys::bignumbers::errors
-#endif // BIGNUMBERS_ERRORS_H
+} // namespace arbys::bignum::errors

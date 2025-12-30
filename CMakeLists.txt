@@ -6,7 +6,7 @@ project(arbys-bignum
     LANGUAGES CXX
 )
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -44,7 +44,7 @@ target_include_directories(arbys-bignum
         $<INSTALL_INTERFACE:include>
 )
 
-target_compile_features(arbys-bignum PUBLIC cxx_std_26)
+target_compile_features(arbys-bignum PUBLIC cxx_std_23)
 
 set_target_properties(arbys-bignum PROPERTIES
         POSITION_INDEPENDENT_CODE ON

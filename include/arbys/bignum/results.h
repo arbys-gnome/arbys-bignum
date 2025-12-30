@@ -1,5 +1,5 @@
-#ifndef BIGNUMBERS_RESULTS_H
-#define BIGNUMBERS_RESULTS_H
+#pragma once
+
 #include "big_int.h"
 
 namespace arbys::bignum {
@@ -9,6 +9,4 @@ struct DivisionResult {
     big_int remainder;
 };
 
-} // namespace arbys::bignumbers
-
-#endif // BIGNUMBERS_RESULTS_H
+} // namespace arbys::bignum

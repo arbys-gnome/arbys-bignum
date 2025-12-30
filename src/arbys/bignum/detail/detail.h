@@ -1,5 +1,4 @@
-#ifndef SRC_DETAILS_DETAILS_HPP_
-#define SRC_DETAILS_DETAILS_HPP_
+#pragma once
 
 #include "arbys/bignum/big_int.h"
 #include "arbys/bignum/errors.h"
@@ -66,6 +65,4 @@ namespace arbys::bignum::detail {
     [[nodiscard]] std::expected<big_int, errors::ArithmeticError>
     mod_abs(const big_int& dividend, const big_int& divisor) noexcept;
 
-} // namespace detail
-
-#endif
+} // namespace arbys::bignum::detail

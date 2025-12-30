@@ -1,5 +1,4 @@
-#ifndef ARBYS_BIGNUMBERS_BIGINT_H
-#define ARBYS_BIGNUMBERS_BIGINT_H
+#pragma once
 
 #include <compare>
 #include <concepts>
@@ -97,6 +96,4 @@ class big_int {
     friend struct detail::big_int_access;
 };
 
-} // namespace arbys::bignumbers
-
-#endif // ARBYS_BIGNUMBERS_BIGINT_H
+} // namespace arbys::bignum

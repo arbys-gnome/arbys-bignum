@@ -1,5 +1,4 @@
-#ifndef BIGNUMBERS_HELPERS_H
-#define BIGNUMBERS_HELPERS_H
+#pragma once
 
 #include <string>
 #include <gtest/gtest.h>
@@ -45,6 +44,4 @@ namespace arbys::bignum::tests::helpers {
         EXPECT_EQ(exp.error(), expected_error);
     }
 
-} // namespace arbys::bignumbers::tests::helpers
-
-#endif //BIGNUMBERS_HELPERS_H
+} // namespace arbys::bignum::tests::helpers

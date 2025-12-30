@@ -1,5 +1,5 @@
-#ifndef BIGNUMBERS_CONFIG_H
-#define BIGNUMBERS_CONFIG_H
+#pragma once
+
 #include <cstdint>
 
 namespace arbys::bignum::detail {
@@ -10,6 +10,4 @@ using s_dlimb_t                     = int64_t;
 static constexpr unsigned LIMB_BITS = 32;
 static constexpr dlimb_t  BASE      = dlimb_t{1} << LIMB_BITS;
 
-} // namespace arbys::bignumbers::detail
-
-#endif // BIGNUMBERS_CONFIG_H
+} // namespace arbys::bignum::detail
