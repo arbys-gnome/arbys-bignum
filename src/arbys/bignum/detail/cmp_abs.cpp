@@ -20,4 +20,4 @@ std::strong_ordering cmp_abs(const big_int &lhs, const big_int &rhs) {
     );
 }
 
-} // namespace arbys::bignumbers::detail
+} // namespace arbys::bignum::detail

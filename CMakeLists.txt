@@ -29,6 +29,7 @@ set(ARBYS_BIGNUM_DETAIL_SOURCES
         src/arbys/bignum/detail/sub_abs.cpp
         src/arbys/bignum/detail/mul_abs.cpp
         src/arbys/bignum/detail/div_abs.cpp
+        include/arbys/bignum/format.h
 )
 
 add_library(arbys-bignum

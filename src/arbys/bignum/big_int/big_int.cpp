@@ -145,7 +145,7 @@ std::expected<big_int, errors::ParseError> big_int::from_string(
     compact.reserve(input.size());
 
     while (!input.empty()) {
-        const size_t           pos   = input.find(separator);
+        const std::size_t      pos   = input.find(separator);
         const std::string_view chunk = input.substr(0, pos);
 
         for (const char c : chunk) {
@@ -168,49 +168,20 @@ std::expected<big_int, errors::ParseError> big_int::from_string(
     return detail::parse_limbs(compact, is_negative);
 }
 
-size_t big_int::length() const noexcept { return impl_->length(); }
+std::size_t big_int::length() const noexcept { return impl_->length(); }
 
 bool big_int::is_negative() const noexcept { return impl_->is_negative_; }
 
 bool big_int::is_zero() const noexcept { return impl_->length_ == 1 && impl_->limbs_[0] == 0; }
 
 std::string big_int::to_string() const {
-    if (is_zero()) {
-        return "0";
+    std::string s;
+    s.reserve(impl_->length_ * 10 + 1);
+    impl_->write_digits_to(std::back_inserter(s));
+    if (is_negative()) {
+        s.insert(s.begin(), '-');
     }
-
-    // Convert from base 2^32 to base 10
-    // Use a temporary copy for the conversion
-    std::vector<detail::limb_t> temp     = impl_->limbs_;
-    size_t                      temp_len = impl_->length_;
-    std::string                 result;
-    result.reserve(temp_len * 10); // rough estimate: log10(2^32) ≈ 9.63
-
-    // Repeatedly divide by 10 to extract decimal digits
-    while (temp_len > 1 || temp[0] > 0) {
-        detail::dlimb_t remainder = 0;
-
-        // Divide the entire number by 10 (from most significant to least)
-        for (size_t i = temp_len; i-- > 0;) {
-            const detail::dlimb_t current = (remainder << detail::LIMB_BITS) | temp[i];
-            temp[i]                       = static_cast<detail::limb_t>(current / 10);
-            remainder                     = current % 10;
-        }
-
-        // Remove leading zero limbs
-        while (temp_len > 1 && temp[temp_len - 1] == 0) {
-            temp_len--;
-        }
-
-        result += static_cast<char>('0' + remainder);
-    }
-
-    if (impl_->is_negative_) {
-        result += '-';
-    }
-
-    std::ranges::reverse(result);
-    return result;
+    return s;
 }
 
 std::strong_ordering big_int::operator<=>(const big_int &other) const {
@@ -293,6 +264,9 @@ big_int big_int::mul(const big_int &other) const noexcept {
 }
 
 std::expected<big_int, errors::ArithmeticError> big_int::div(const big_int &other) const noexcept {
+    if (other.is_zero())
+        return std::unexpected(errors::ArithmeticError::DivisionByZero);
+
     if (is_zero()) {
         return big_int(); // 0 / anything = 0 (except 0)
     }
@@ -312,6 +286,9 @@ std::expected<big_int, errors::ArithmeticError> big_int::div(const big_int &othe
 }
 
 std::expected<big_int, errors::ArithmeticError> big_int::mod(const big_int &other) const noexcept {
+    if (other.is_zero())
+        return std::unexpected(errors::ArithmeticError::DivisionByZero);
+
     if (is_zero()) {
         return big_int(); // 0 % anything = 0 (except 0)
     }
@@ -383,15 +360,12 @@ big_int &big_int::operator%=(const big_int &other) {
 
 big_int::operator bool() const noexcept { return !is_zero(); }
 
-bool big_int::operator!() const noexcept { return !static_cast<bool>(*this); }
-
 std::ostream &operator<<(std::ostream &os, const big_int &bi) {
-    // TODO: try to avoid temporary string (consider bi.write_to(os) and write bytes directly)
-    os << bi.to_string();
+    bi.format_to(std::ostreambuf_iterator<char>(os));
     return os;
 }
 
-std::istream& operator>>(std::istream& is, big_int& bi) {
+std::istream &operator>>(std::istream &is, big_int &bi) {
     std::string token;
     if (!(is >> token))
         return is;

@@ -55,10 +55,15 @@ class big_int {
     template <std::integral T> [[nodiscard]] static big_int from_integer(T value);
 
     // Query methods
-    [[nodiscard]] size_t      length() const noexcept;
+    [[nodiscard]] std::size_t length() const noexcept;
     [[nodiscard]] bool        is_negative() const noexcept;
     [[nodiscard]] bool        is_zero() const noexcept;
     [[nodiscard]] std::string to_string() const;
+
+    template <class Out> Out format_to(Out out) const {
+        const std::string s = to_string();
+        return std::copy(s.begin(), s.end(), out);
+    }
 
     // Arithmetic operations
     [[nodiscard]] big_int                                         add(const big_int &other) const noexcept;
@@ -85,7 +90,6 @@ class big_int {
     big_int               &operator/=(const big_int &other);
     big_int               &operator%=(const big_int &other);
     [[nodiscard]] explicit operator bool() const noexcept;
-    [[nodiscard]] bool     operator!() const noexcept;
     friend std::ostream   &operator<<(std::ostream &os, const big_int &bi);
     friend std::istream   &operator>>(std::istream &is, big_int &bi);
 
