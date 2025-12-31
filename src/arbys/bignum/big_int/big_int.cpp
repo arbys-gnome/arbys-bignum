@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
+#include <istream>
 #include <ranges>
 #include <stdexcept>
 
@@ -384,12 +385,43 @@ big_int::operator bool() const noexcept { return !is_zero(); }
 
 bool big_int::operator!() const noexcept { return !static_cast<bool>(*this); }
 
-big_int big_int::operator+(const big_int &other) const { return add(other); }
+std::ostream &operator<<(std::ostream &os, const big_int &bi) {
+    // TODO: try to avoid temporary string (consider bi.write_to(os) and write bytes directly)
+    os << bi.to_string();
+    return os;
+}
 
-big_int big_int::operator-(const big_int &other) const { return sub(other); }
+std::istream& operator>>(std::istream& is, big_int& bi) {
+    std::string token;
+    if (!(is >> token))
+        return is;
 
-big_int big_int::operator*(const big_int &other) const { return mul(other); }
+    auto parsed = big_int::from_string(token);
+    if (!parsed) {
+        is.setstate(std::ios::failbit);
+        return is;
+    }
 
-big_int big_int::operator-() const { return negate(); }
+    bi = std::move(*parsed);
+    return is;
+}
 
-} // namespace arbys::bignumbers
+big_int big_int::operator+(const big_int &other) const noexcept { return add(other); }
+
+big_int big_int::operator+=(const big_int &other) noexcept {
+    *this = *this + other;
+    return *this;
+}
+
+big_int big_int::operator-(const big_int &other) const noexcept { return sub(other); }
+
+big_int big_int::operator-=(const big_int &other) noexcept {
+    *this = *this - other;
+    return *this;
+}
+
+big_int big_int::operator*(const big_int &other) const noexcept { return mul(other); }
+
+big_int big_int::operator-() const noexcept { return negate(); }
+
+} // namespace arbys::bignum

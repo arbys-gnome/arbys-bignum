@@ -74,16 +74,20 @@ class big_int {
     [[nodiscard]] big_int negate() const;
 
     // Operators
-    [[nodiscard]] big_int  operator+(const big_int &other) const;
-    [[nodiscard]] big_int  operator-(const big_int &other) const;
-    [[nodiscard]] big_int  operator-() const; // unary minus
-    [[nodiscard]] big_int  operator*(const big_int &other) const;
+    [[nodiscard]] big_int  operator+(const big_int &other) const noexcept;
+    big_int                operator+=(const big_int &other) noexcept;
+    [[nodiscard]] big_int  operator-(const big_int &other) const noexcept;
+    big_int                operator-=(const big_int &other) noexcept;
+    [[nodiscard]] big_int  operator-() const noexcept; // unary minus
+    [[nodiscard]] big_int  operator*(const big_int &other) const noexcept;
     [[nodiscard]] big_int  operator/(const big_int &other) const;
     [[nodiscard]] big_int  operator%(const big_int &other) const;
     big_int               &operator/=(const big_int &other);
     big_int               &operator%=(const big_int &other);
     [[nodiscard]] explicit operator bool() const noexcept;
     [[nodiscard]] bool     operator!() const noexcept;
+    friend std::ostream   &operator<<(std::ostream &os, const big_int &bi);
+    friend std::istream   &operator>>(std::istream &is, big_int &bi);
 
     // Comparison
     [[nodiscard]] std::strong_ordering operator<=>(const big_int &other) const;
@@ -97,5 +101,8 @@ class big_int {
 
     friend struct detail::big_int_access;
 };
+
+std::ostream &operator<<(std::ostream &os, const big_int &bi);
+std::istream &operator>>(std::istream &is, big_int &bi);
 
 } // namespace arbys::bignum
