@@ -380,6 +380,10 @@ big_int &big_int::operator%=(const big_int &other) {
     return *this;
 }
 
+big_int::operator bool() const noexcept { return !is_zero(); }
+
+bool big_int::operator!() const noexcept { return !static_cast<bool>(*this); }
+
 big_int big_int::operator+(const big_int &other) const { return add(other); }
 
 big_int big_int::operator-(const big_int &other) const { return sub(other); }

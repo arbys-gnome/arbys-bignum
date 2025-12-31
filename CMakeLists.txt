@@ -47,6 +47,7 @@ target_include_directories(arbys-bignum
 target_compile_features(arbys-bignum PUBLIC cxx_std_23)
 
 set_target_properties(arbys-bignum PROPERTIES
+        EXPORT_NAME bignum
         POSITION_INDEPENDENT_CODE ON
 )
 

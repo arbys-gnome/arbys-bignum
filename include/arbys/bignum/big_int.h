@@ -24,7 +24,7 @@ class big_int {
     big_int();
 
     // Implicit conversion from integral types
-    // This allows: BigInt bn = 100000;
+    // This allows: big_int bn = 100000;
     template <std::integral T> big_int(T value) : big_int(from_integer(value)) {}
 
     // Copy and move constructors
@@ -74,14 +74,16 @@ class big_int {
     [[nodiscard]] big_int negate() const;
 
     // Operators
-    [[nodiscard]] big_int operator+(const big_int &other) const;
-    [[nodiscard]] big_int operator-(const big_int &other) const;
-    [[nodiscard]] big_int operator-() const; // unary minus
-    [[nodiscard]] big_int operator*(const big_int &other) const;
-    [[nodiscard]] big_int operator/(const big_int &other) const;
-    [[nodiscard]] big_int operator%(const big_int &other) const;
-    big_int              &operator/=(const big_int &other);
-    big_int              &operator%=(const big_int &other);
+    [[nodiscard]] big_int  operator+(const big_int &other) const;
+    [[nodiscard]] big_int  operator-(const big_int &other) const;
+    [[nodiscard]] big_int  operator-() const; // unary minus
+    [[nodiscard]] big_int  operator*(const big_int &other) const;
+    [[nodiscard]] big_int  operator/(const big_int &other) const;
+    [[nodiscard]] big_int  operator%(const big_int &other) const;
+    big_int               &operator/=(const big_int &other);
+    big_int               &operator%=(const big_int &other);
+    [[nodiscard]] explicit operator bool() const noexcept;
+    [[nodiscard]] bool     operator!() const noexcept;
 
     // Comparison
     [[nodiscard]] std::strong_ordering operator<=>(const big_int &other) const;
