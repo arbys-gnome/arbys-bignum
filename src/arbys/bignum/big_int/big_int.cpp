@@ -168,8 +168,6 @@ std::expected<big_int, errors::ParseError> big_int::from_string(
     return detail::parse_limbs(compact, is_negative);
 }
 
-std::size_t big_int::length() const noexcept { return impl_->length(); }
-
 bool big_int::is_negative() const noexcept { return impl_->is_negative_; }
 
 bool big_int::is_zero() const noexcept { return impl_->length_ == 1 && impl_->limbs_[0] == 0; }

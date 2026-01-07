@@ -4,6 +4,7 @@
 #include <string>
 
 namespace arbys::bignum::errors {
+// TODO: write documentation
 
 /// Errors that can occur during parsing
 enum class ParseError {
