@@ -23,11 +23,12 @@ set(ARBYS_BIGNUM_TEST_SOURCES
         big_int/test_div.cpp
         big_int/test_cmp.cpp
         big_int/test_from_string.cpp
+        big_int/test_integration.cpp
+        big_int/test_from_integer.cpp
 )
 
 set(ARBYS_BIGNUM_TEST_HELPER_SOURCES
     helpers/helpers.cpp
-        big_int/test_from_integer.cpp
 )
 
 add_executable(arbys-bignum-tests

@@ -18,6 +18,7 @@ struct big_int_impl;
 struct big_int_access;
 } // namespace detail
 
+// TODO: write documentation
 class big_int {
   public:
     // Constructors and factory methods

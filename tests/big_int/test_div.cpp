@@ -4,93 +4,111 @@
 #include "../helpers/helpers.h"
 
 namespace arbys::bignum::tests {
-//     TEST(BigIntDivWithLongLongTest, SimpleLongLongDivision) {
-//         const BigInt a = BigInt::from_string("1000").value();
-//         const long long d = 8;
-//         const BigInt r = a.div(d);
-//         helpers::expect_eq(r, "125");
-//     }
-//
-//     TEST(BigIntDivWithLongLongTest, LongLongNonExactDivision) {
-//         BigInt a = BigInt::from_string("99").value();
-//         BigInt r = a.div(4LL);
-//         helpers::expect_eq(r, "24");
-//     }
-//
-//     TEST(BigIntDivWithLongLongTest, DivideWithNegativeLL) {
-//         BigInt a = BigInt::from_string("100").value();
-//         BigInt r = a.div(-3LL);
-//         helpers::expect_eq(r, "-33");  // if BigInt supports signed values
-//     }
-//
-//     TEST(BigIntDivWithLongLongTest, DivisionByZeroLLThrows) {
-//         const BigInt lhs = BigInt::from_string("100").value();
-//         constexpr long long rhs = 0LL;
-//         EXPECT_THROW(lhs / rhs, std::invalid_argument);
-//     }
-//
-//     TEST(BigIntDivWithLongLongTest, VeryLargeBigIntDivLL) {
-//         std::string s = "999999999999999999999999999999999999";
-//
-//         BigInt a = BigInt::from_string(s).value();
-//         long long d = 1234567;
-//
-//         std::string expected = helpers::big_int_string_div(s, "1234567");
-//         BigInt r = a.div(d);
-//         helpers::expect_eq(r, expected);
-//     }
-//
-//
-//     TEST(BigIntDivTest, SmallExactDivision) {
-//     BigInt a = BigInt::fromString("100");
-//     BigInt b = BigInt::fromString("25");
-//     BigInt r = a.div(b);
-//     helpers::expectBigIntEquals(r, "4");
-// }
-//
-// TEST(BigIntDivTest, SmallNonExactDivision) {
-//     BigInt a = BigInt::fromString("101");
-//     BigInt b = BigInt::fromString("25");
-//     BigInt r = a.div(b);
-//     helpers::expectBigIntEquals(r, "4");  // truncates
-// }
-//
-// TEST(BigIntDivTest, LargerExactDivision) {
-//     BigInt a = BigInt::fromString("987654321");
-//     BigInt b = BigInt::fromString("3");
-//     BigInt r = a.div(b);
-//     helpers::expectBigIntEquals(r, "329218107");
-// }
-//
-// TEST(BigIntDivTest, DivisionByLargerNumber) {
-//     BigInt a = BigInt::fromString("12345");
-//     BigInt b = BigInt::fromString("999999999");
-//     BigInt r = a.div(b);
-//     helpers::expectBigIntEquals(r, "0");
-// }
-//
-// TEST(BigIntDivTest, DivideBySelf) {
-//     BigInt a = BigInt::fromString("123456");
-//     BigInt r = a.div(a);
-//     helpers::expectBigIntEquals(r, "1");
-// }
-//
-// TEST(BigIntDivTest, LongLargeNumbers) {
-//     std::string s1 = "99999999999999999999999999";
-//     std::string s2 = "123456789";
-//
-//     BigInt a = BigInt::fromString(s1);
-//     BigInt b = BigInt::fromString(s2);
-//
-//     std::string expected = helpers::bigIntegerStringDiv(s1, s2);
-//     BigInt r = a.div(b);
-//     helpers::expectBigIntEquals(r, expected);
-// }
-//
-// TEST(BigIntDivTest, DivisionByZeroThrows) {
-//     BigInt a = BigInt::fromString("12345");
-//     BigInt zero = BigInt::fromString("0");
-//
-//     EXPECT_THROW(a.div(zero), std::invalid_argument);
-// }
+
+TEST(BigIntDivWithLongLongTest, SimpleLongLongDivision) {
+    const big_int   a = big_int::from_string("1000").value();
+    const long long d = 8;
+    const big_int   r = a / d;
+    EXPECT_BI_EQ(r, "125");
 }
+
+TEST(BigIntDivWithLongLongTest, LongLongNonExactDivision) {
+    const big_int a = big_int::from_string("99").value();
+    const big_int r = a / 4LL;
+    EXPECT_BI_EQ(r, "24");
+}
+
+TEST(BigIntDivWithLongLongTest, DivideWithNegativeLL) {
+    const big_int a = big_int::from_string("100").value();
+    const big_int r = a/ -3LL;
+    EXPECT_BI_EQ(r, "-33");
+}
+
+TEST(BigIntDivWithLongLongTest, DivisionByZeroLLThrows) {
+    const big_int       lhs = big_int::from_string("100").value();
+    constexpr long long rhs = 0LL;
+    EXPECT_THROW(lhs / rhs, std::domain_error);
+}
+
+TEST(BigIntDivWithLongLongTest, VeryLargebig_intDivLL) {
+    const std::string s = "999999999999999999999999999999999999";
+
+    const big_int   a = big_int::from_string(s).value();
+    const long long d = 1234567;
+
+    const std::string expected = "810000591300431649315104000025";
+    const big_int     r        = a / d;
+    EXPECT_BI_EQ(r, expected);
+}
+
+TEST(BigIntDivTest, SmallExactDivision) {
+    const big_int a = big_int::from_string("100").value();
+    const big_int b = big_int::from_string("25").value();
+    const big_int r = a / b;
+    EXPECT_BI_EQ(r, "4");
+}
+
+TEST(BigIntDivTest, SmallNonExactDivision) {
+    const big_int a = big_int::from_string("101").value();
+    const big_int b = big_int::from_string("25").value();
+    const big_int r = a / b;
+    EXPECT_BI_EQ(r, "4"); // truncates
+}
+
+TEST(BigIntDivTest, LargerExactDivision) {
+    const big_int a = big_int::from_string("987654321").value();
+    const big_int b = big_int::from_string("3").value();
+    const big_int r = a/ b;
+    EXPECT_BI_EQ(r, "329218107");
+}
+
+TEST(BigIntDivTest, DivisionByLargerNumber) {
+    const big_int a = big_int::from_string("12345").value();
+    const big_int b = big_int::from_string("999999999").value();
+    const big_int r = a / b;
+    EXPECT_BI_EQ(r, "0");
+}
+
+TEST(BigIntDivTest, DivideBySelf) {
+    const big_int a = big_int::from_string("123456").value();
+    const big_int r = a / a;
+    EXPECT_BI_EQ(r, "1");
+}
+
+TEST(BigIntDivTest, LongLargeNumbers) {
+    const std::string s1 = "99999999999999999999999999";
+    const std::string s2 = "123456789";
+
+    const big_int a = big_int::from_string(s1).value();
+    const big_int b = big_int::from_string(s2).value();
+
+    const std::string expected = "810000007371000067"; // calculated online
+    const big_int     r        = a / b;
+    EXPECT_BI_EQ(r, expected);
+}
+
+TEST(BigIntDivTest, DivisionByZeroThrows) {
+    const big_int a    = big_int::from_string("12345").value();
+    const big_int zero = big_int::from_string("0").value();
+
+    EXPECT_THROW(a / zero, std::domain_error);
+}
+
+TEST(BigIntDivTest, MultipleDivisions) {
+    const big_int n = big_int::from_string("40000490494094049049049409").value();
+    const big_int u = 3;
+    const big_int v = 7;
+    const big_int w = 21;
+    const big_int a = n / u; // 13333496831364683016349803
+    const std::string ea = "13333496831364683016349803";
+    EXPECT_BI_EQ(a, ea);
+    const big_int b = n / v; // 5714355784870578435578487
+    const std::string eb = "5714355784870578435578487";
+    EXPECT_BI_EQ(b, eb);
+    const big_int c = n / w; // 1904785261623526145192829
+    const std::string ec = "1904785261623526145192829";
+    EXPECT_BI_EQ(c, ec);
+
+}
+
+} // namespace arbys::bignum::tests
